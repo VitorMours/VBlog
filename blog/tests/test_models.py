@@ -6,7 +6,7 @@ class TestModels(TestCase):
     def setUp(self) -> None:
         mock_user = User("vitor moura","vitormoura@gmail.com","password")
 
-        mock_post = Post(
+        self.mock_post = Post(
             title = "New post",
             content="Creating a post to test the test suit",
             visibility = False,
@@ -39,5 +39,28 @@ class TestModels(TestCase):
         self.assertTrue(hasattr(Post, "id"))
 
     def test_if_post_model_has_string_representation(self) -> None:
-        self.assertEqual()    
+        self.assertEqual(str(self.mock_post), f"{self.mock_post.title} {self.mock_post.owner}: {self.mock_post.visibility}")   
     
+    def test_create_post_with_wrong_type_in_visibility_field(self) -> None:
+        with self.assertRaises(TypeError):
+            post = Post(
+                visibility=123
+            )
+    
+    def test_create_post_with_wrong_type_in_title_field(self) -> None:
+        with self.assertRaises(TypeError):
+            post = Post(
+                title=123
+            )
+
+    def test_create_post_with_wrong_type_in_content_field(self) -> None:
+        with self.assertRaises(TypeError):
+            post = Post(
+                content=123
+            )
+
+    def test_create_post_with_wrong_type_in_owner_field(self) -> None:
+        with self.assertRaises(TypeError):
+            post = Post(
+                owner=123
+            )

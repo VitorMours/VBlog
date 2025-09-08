@@ -1,3 +1,27 @@
-venv
-/venv
+# Arquivos de sistema e editor
+.DS_Store
+.env
+.idea/
+.vscode/
+
+# Ambientes virtuais
 venv/
+env/
+
+# Arquivos de cache e de compilação
+*.pyc
+__pycache__/
+
+# Logs e arquivos temporários
+*.log
+*.sqlite
+*.tmp
+*.bak
+
+# Arquivos e diretórios específicos do Django
+db.sqlite3
+/media/
+/static/
+
+# Configurações de segurança e arquivos de banco de dados
+/staticfiles/
