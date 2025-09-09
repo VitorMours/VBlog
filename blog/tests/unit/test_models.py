@@ -2,7 +2,7 @@ from django.test import TestCase
 from blog.models import Post
 from django.contrib.auth.models import User
 
-class TestModels(TestCase):
+class TestPostModel(TestCase):
     def setUp(self) -> None:
         mock_user = User("vitor moura","vitormoura@gmail.com","password")
 

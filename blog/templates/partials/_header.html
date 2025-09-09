@@ -1,0 +1,20 @@
+<header>
+    <nav class="bg-gray-800 p-5 text-white shadow-md">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="flex gap-4 items-center">
+                <a href="/" id="blog-logo" class="text-xl font-bold">VBlog</a>
+                <div class="space-x-8">
+                    <a href="{% url 'index' %}" class="mr-4 hover:underline">Home</a>
+                    <a href="{% url 'about' %}" class="hover:underline">About</a>
+                </div>
+            </div>
+            <div>
+                {% comment %} <div class="space-x-8"> {% endcomment %}
+                    {% comment %} <a href="{% url  'login' %}" class="mr-4 hover:underline">Login</a> {% endcomment %}
+                    {% comment %} <a href="{% url 'signin' %}" class="hover:underline">Register</a> {% endcomment %}
+                {% comment %} </div> {% endcomment %}
+            </div>
+        </div>
+
+
+</header>
