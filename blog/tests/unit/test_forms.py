@@ -114,16 +114,30 @@ class TestSigninForm(TestCase):
         form = SigninForm(data={
             "first_name": "John",
             "last_name": "Doe",
+            "email":"teste.teste@email.com",
             "password": "strongPassword123"
         })
         self.assertTrue(form.is_valid())            
         
     def test_signin_form_validate_with_wrong_types(self) -> None:
-        with self.assertRaises(AssertionError):
-            form = SigninForm(data={
-                "first_name": 123,
-                "last_name": True,
-                "password": ["array"]
-            })
-            self.assertFalse(form.is_valid())
+        form = SigninForm(data={
+            "first_name": 123,
+            "last_name": True,
+            "email":"asdsad",
+            "password": ["array"]
+        })
+        self.assertFalse(form.is_valid())
             
+    def test_singin_form_last_name_input_has_label(self) -> None:
+        self.assertEqual(self.form.fields["last_name"].label, "Type your last name")
+        
+    def test_singin_form_have_email_field(self) -> None:
+        self.assertIn('email', self.form.fields)
+        
+    def test_signin_form_email_field_is_emailfield(self) -> None:
+        self.assertIsInstance(self.form.fields["email"], forms.EmailField)
+        
+    def test_signin_form_email_field_is_required_and_have_label(self) -> None:
+        self.assertTrue(self.form.fields["email"].required)
+        self.assertIsNotNone(self.form.fields["email"].label)
+        self.assertEqual(self.form.fields["email"].label, "Type your email")
