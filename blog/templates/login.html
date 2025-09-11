@@ -3,5 +3,9 @@
 
 {% block title %} - Login{% endblock %}
 
-
-qwewqe
+{% block content %}
+    <form>
+        {% csrf_token %}
+        {{ form }}
+    </form>
+{% endblock %}
