@@ -8,6 +8,7 @@ class Post(models.Model):
     _content = models.TextField(null=False, blank=False)
     _visibility = models.BooleanField(default=False, null=False, blank=False)
     _owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.CharField()
 
     @property
     def visibility(self) -> bool:

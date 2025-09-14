@@ -2,7 +2,6 @@ from django.test import TestCase
 from blog.forms import SigninForm, LoginForm
 from django import forms
 
-
 class TestLoginForm(TestCase):
     def setUp(self) -> None:
         self.form = LoginForm()
@@ -33,7 +32,7 @@ class TestLoginForm(TestCase):
         self.assertFalse(self.form.fields["email"].label is None)
     
     def test_email_field_label_content(self) -> None:
-        self.assertEqual(self.form.fields["email"].label, "Type your email")
+        self.assertEqual(self.form.fields["email"].label, "Email")
  
     def test_if_login_form_has_password_field(self) -> None:
         self.assertIn('password', self.form.fields)
@@ -51,7 +50,7 @@ class TestLoginForm(TestCase):
         self.assertFalse(self.form.fields["password"].label is None)
         
     def test_login_form_password_field_content(self) -> None:
-        self.assertEqual(self.form.fields["password"].label, "Type your password")
+        self.assertEqual(self.form.fields["password"].label, "Password")
  
  
  

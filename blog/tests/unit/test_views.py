@@ -70,7 +70,7 @@ class TestAuthViews(TestCase):
     def test_if_login_page_have_form(self) -> None:
         response = self.client.get('/login')
         html = response.content.decode("utf-8")
-        self.assertIn('<form>', html, "A página não contém nenhum formulário")
+        self.assertIn('<form', html, "A página não contém nenhum formulário")
         self.assertIn('</form>', html, "A página não contém nenhum formulário")
 
 

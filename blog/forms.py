@@ -7,6 +7,6 @@ class SigninForm(forms.Form):
     password = forms.CharField(widget=forms.PasswordInput(), label="Type your password")
     
 class LoginForm(forms.Form):
-    email = forms.EmailField(label="Type your email", required=True)
-    password = forms.CharField(required=True, widget=forms.PasswordInput(), label="Type your password")
+    email = forms.EmailField(label="Email", required=True)
+    password = forms.CharField(required=True, widget=forms.PasswordInput(), label="Password")
     

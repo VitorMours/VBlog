@@ -64,3 +64,9 @@ class TestPostModel(TestCase):
             post = Post(
                 owner=123
             )
+    def test_if_user_field_exists_in_model(self) -> None:
+        self.assertTrue(hasattr(Post, "user"))
+        
+    def test_name_equals_emoji(self) -> None:
+        user = User(username="😊")  # carinha feliz como string
+        self.assertEqual(user.username, "😊")
