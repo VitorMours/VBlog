@@ -1,7 +1,7 @@
 from django.test import TestCase, Client
 from django.urls import reverse
 from django.http import HttpResponseNotAllowed
-from blog.forms import LoginForm
+from blog.forms import LoginForm, SigninForm
 
 class TestViews(TestCase):
     def setUp(self) -> None: 
@@ -84,6 +84,32 @@ class TestAuthViews(TestCase):
         # Verifica se é um campo hidden (geralmente é)
         self.assertIn('type="hidden"', html,
                      'CSRF token não está como campo hidden')
+
+    def test_if_signin_page_have_form(self) -> None:
+        response = self.client.get('/login')
+        html = response.content.decode("utf-8")
+        self.assertIn('<form', html, "A página não contém nenhum formulário")
+        self.assertIn('</form>', html, "A página não contém nenhum formulário")
+
+    def test_if_signin_is_using_csrf(self) -> None:
+        response = self.client.get('/signin')
+        html = response.content.decode('utf-8')        
+        # Verifica a presença do campo CSRF
+        self.assertIn('name="csrfmiddlewaretoken"', html,
+                        'Campo CSRF token não encontrado')
         
-    def test_if_login_credential_input_exists(self) -> None:
-        pass
+        # Verifica se é um campo hidden (geralmente é)
+        self.assertIn('type="hidden"', html,
+                        'CSRF token não está como campo hidden')
+    
+    def test_if_signin_page_is_correct(self) -> None:
+        response = self.client.get('/signin')
+        html = response.content.decode("utf-8")
+        self.assertTrue(html.endswith('</html>'))
+        self.assertTrue(html.startswith('<!DOCTYPE html>'))
+
+
+    def test_if_signin_form_is_login_form(self) -> None:
+        response = self.client.get(reverse('signin'))
+        form = response.context.get('form')
+        self.assertIsInstance(form, SigninForm)

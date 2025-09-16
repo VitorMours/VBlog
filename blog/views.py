@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from blog.forms import LoginForm 
+from blog.forms import LoginForm, SigninForm
 
 def index(request):
     if request.method == "GET":
@@ -20,6 +20,7 @@ def login(request):
         return HttpResponse("You can't use this HTTP method here", status=405)
 def signin(request):
     if request.method == "GET":
-        return render(request, 'signin.html')
+        form = SigninForm()
+        return render(request, 'signin.html', {"form":form})
     else:
         return HttpResponse("You can't use this HTTP method here", status=405)

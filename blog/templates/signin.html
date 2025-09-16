@@ -1,4 +1,38 @@
-{% extends 'partials/base.html' %}
+{% extends 'partials/base.html' %} 
+{% block title %} - Login{% endblock %} 
 
-{% block title %} - Sign In{% endblock %}
+{% block content %}
+<main class="bg-stone-100 min-h-screen w-full flex justify-center items-center">
+    <section class="bg-white shadow-lg rounded-xl p-8 w-full max-w-md mx-4">
+        <div class="text-center mb-8">
+            <h1 class="text-3xl font-bold text-gray-800">Crie seu cadastro</h1>
+            <p class="text-gray-600 mt-2">Fazer registro dentro da aplicação</p>
+        </div>
+        
+        <form class="space-y-6">
+            {% csrf_token %}
 
+            {% for field in form %}
+                <div class="form-group">
+                    {{ field.label_tag }}
+                    {{ field }}
+                </div>
+
+            {% endfor %}
+            
+            <div>
+                <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-200">
+                    Criar conta
+                </button>
+            </div>
+        </form>
+        
+        <div class="mt-6 text-center">
+            <p class="text-sm text-gray-600">
+                Ja tem uma conta?
+                <a href="#" class="font-medium text-blue-600 hover:text-blue-500 ml-1">Fazer Login</a>
+            </p>
+        </div>
+    </section>
+</main>
+{% endblock %}
