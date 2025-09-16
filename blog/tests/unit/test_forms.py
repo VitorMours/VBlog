@@ -1,4 +1,5 @@
-from django.test import TestCase 
+from django.test import TestCase
+from unittest import skip
 from blog.forms import SigninForm, LoginForm
 from django import forms
 
@@ -140,3 +141,11 @@ class TestSigninForm(TestCase):
         self.assertTrue(self.form.fields["email"].required)
         self.assertIsNotNone(self.form.fields["email"].label)
         self.assertEqual(self.form.fields["email"].label, "Type your email")
+
+    @skip("Not implemented yet")
+    def test_if_form_validate_with_same_password_input(self) -> None:
+        pass
+
+    @skip("Not implemented yet")
+    def test_if_form_raises_error_with_different_password_input(self) -> None:
+        pass

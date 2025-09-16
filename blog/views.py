@@ -15,12 +15,12 @@ def about(request):
 def login(request):
     if request.method == "GET":
         form = LoginForm()
-        return render(request, 'login.html', {"form":form})
+        return render(request, 'login.html', { "form" : form })
     else:
         return HttpResponse("You can't use this HTTP method here", status=405)
 def signin(request):
     if request.method == "GET":
         form = SigninForm()
-        return render(request, 'signin.html', {"form":form})
+        return render(request, 'signin.html', { "form" : form })
     else:
         return HttpResponse("You can't use this HTTP method here", status=405)

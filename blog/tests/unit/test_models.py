@@ -67,6 +67,6 @@ class TestPostModel(TestCase):
     def test_if_user_field_exists_in_model(self) -> None:
         self.assertTrue(hasattr(Post, "user"))
         
-    def test_name_equals_emoji(self) -> None:
-        user = User(username="😊")  # carinha feliz como string
+    def test_name_equals_emoji(self) -> None: #TODO: Verificar a remoção de emojis como possibilidade de serem passados dentro do banco de dados
+        user = User(username="😊")
         self.assertEqual(user.username, "😊")

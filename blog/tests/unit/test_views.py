@@ -73,17 +73,22 @@ class TestAuthViews(TestCase):
         self.assertIn('<form', html, "A página não contém nenhum formulário")
         self.assertIn('</form>', html, "A página não contém nenhum formulário")
 
-
     def test_if_login_is_using_csrf(self) -> None:
         response = self.client.get('/login')
         html = response.content.decode('utf-8')        
-        # Verifica a presença do campo CSRF
         self.assertIn('name="csrfmiddlewaretoken"', html,
                      'Campo CSRF token não encontrado')
-        
-        # Verifica se é um campo hidden (geralmente é)
         self.assertIn('type="hidden"', html,
                      'CSRF token não está como campo hidden')
+    ###########################################################################################################################
+
+    def test_signin_view_status_code(self) -> None:
+        response = self.client.get("/signin")
+        self.assertEqual(response.status_code, 200)
+
+    def test_signin_view_status_code_reverse(self) -> None: 
+        response = self.client.get(reverse('signin'))
+        self.assertEqual(response.status_code, 200)
 
     def test_if_signin_page_have_form(self) -> None:
         response = self.client.get('/login')
@@ -94,11 +99,8 @@ class TestAuthViews(TestCase):
     def test_if_signin_is_using_csrf(self) -> None:
         response = self.client.get('/signin')
         html = response.content.decode('utf-8')        
-        # Verifica a presença do campo CSRF
         self.assertIn('name="csrfmiddlewaretoken"', html,
                         'Campo CSRF token não encontrado')
-        
-        # Verifica se é um campo hidden (geralmente é)
         self.assertIn('type="hidden"', html,
                         'CSRF token não está como campo hidden')
     
