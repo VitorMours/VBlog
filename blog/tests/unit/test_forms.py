@@ -79,6 +79,9 @@ class TestSigninForm(TestCase):
     def test_if_signin_form_has_password_field(self) -> None:
         self.assertIn('password', self.form.fields)
         
+    def test_if_signin_form_has_username_field(self) -> None:
+        self.assertIn('username', self.form.fields)
+        
     def test_if_signin_form_fields_are_charfields(self) -> None:
         self.assertIsInstance(self.form.fields['first_name'], forms.CharField)
         self.assertIsInstance(self.form.fields['last_name'], forms.CharField)
@@ -111,6 +114,7 @@ class TestSigninForm(TestCase):
         
     def test_signin_form_valid_with_data(self) -> None:
         form = SigninForm(data={
+            "username": "JohnDoe123",
             "first_name": "John",
             "last_name": "Doe",
             "email":"teste.teste@email.com",
@@ -140,3 +144,5 @@ class TestSigninForm(TestCase):
         self.assertTrue(self.form.fields["email"].required)
         self.assertIsNotNone(self.form.fields["email"].label)
         self.assertEqual(self.form.fields["email"].label, "Type your email")
+        
+    

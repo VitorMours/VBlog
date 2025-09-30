@@ -1,7 +1,7 @@
 from django.test import TestCase, Client
 from django.urls import reverse
 from django.http import HttpResponseNotAllowed
-from blog.forms import LoginForm
+from blog.forms import LoginForm, SigninForm
 
 class TestViews(TestCase):
     def setUp(self) -> None: 
@@ -87,3 +87,26 @@ class TestAuthViews(TestCase):
         
     def test_if_login_credential_input_exists(self) -> None:
         pass
+    
+    def test_signin_view_status_code(self) -> None:
+        response = self.client.get(reverse("signin"))
+        self.assertTrue(response.status_code == 200)
+    
+    def test_if_signin_view_template(self) -> None:
+        self.assertTemplateUsed(self.client.get('/signin'), 'signin.html')
+
+    def test_if_signin_view_receive_form(self) -> None:
+        response = self.client.get(reverse("signin"))
+        form = response.context.get("form")
+        self.assertIsInstance(form, SigninForm)
+        
+    def test_if_signin_view_have_form(self) -> None:
+        response = self.client.get(reverse("signin"))
+        data = response.content.decode("utf-8")
+        self.assertTrue(data.endswith("</html>"))
+        self.assertTrue("<form" in data)
+        self.assertTrue("</form>" in data)
+        
+    #def test_if_signin_form_can_post(self) -> None:
+    #    response = self.client.post(reverse("signin"))
+    #    self.assertTrue(response.status_code == 200)

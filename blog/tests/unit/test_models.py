@@ -38,6 +38,9 @@ class TestPostModel(TestCase):
     def test_post_model_have_id_field(self) -> None:
         self.assertTrue(hasattr(Post, "id"))
 
+    def test_post_model_have_created_date_field(self) -> None:
+        self.assertTrue(hasattr(Post, "date_created"))
+
     def test_if_post_model_has_string_representation(self) -> None:
         self.assertEqual(str(self.mock_post), f"{self.mock_post.title} {self.mock_post.owner}: {self.mock_post.visibility}")   
     
@@ -64,8 +67,6 @@ class TestPostModel(TestCase):
             post = Post(
                 owner=123
             )
-    def test_if_user_field_exists_in_model(self) -> None:
-        self.assertTrue(hasattr(Post, "user"))
         
     def test_name_equals_emoji(self) -> None:
         user = User(username="😊")  # carinha feliz como string

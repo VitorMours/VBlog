@@ -51,10 +51,8 @@ class TestAuthUrls(TestCase):
         self.assertEqual(response.headers['Content-Type'], 'text/html; charset=utf-8')
         
     def test_login_view_not_allowed_methods(self) -> None:
-        response_post = self.client.post(reverse('login'))
         response_put = self.client.put(reverse('login'))
         response_delete = self.client.delete(reverse('login'))
-        self.assertEqual(response_post.status_code, 405)
         self.assertEqual(response_put.status_code, 405)
         self.assertEqual(response_delete.status_code, 405)
         
@@ -72,9 +70,7 @@ class TestAuthUrls(TestCase):
         self.assertEqual(self.signin_response.headers['Content-Type'], 'text/html; charset=utf-8')
         
     def test_singin_view_not_allowed_methods(self) -> None:
-        response_post = self.client.post(reverse('signin'))
         response_put = self.client.put(reverse('signin'))
         response_delete = self.client.delete(reverse('signin'))
-        self.assertEqual(response_post.status_code, 405)
         self.assertEqual(response_put.status_code, 405)
         self.assertEqual(response_delete.status_code, 405)

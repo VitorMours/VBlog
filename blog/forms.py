@@ -1,6 +1,7 @@
 from django import forms 
 
 class SigninForm(forms.Form):
+    username = forms.CharField(required=True, label="Type your username")
     first_name = forms.CharField(required=True, label="Type your first name")
     last_name = forms.CharField(required=False, label="Type your last name")
     email = forms.EmailField(label="Type your email")

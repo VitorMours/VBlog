@@ -8,7 +8,8 @@ class Post(models.Model):
     _content = models.TextField(null=False, blank=False)
     _visibility = models.BooleanField(default=False, null=False, blank=False)
     _owner = models.ForeignKey(User, on_delete=models.CASCADE)
-    user = models.CharField()
+    _date_created = models.DateTimeField()    
+
 
     @property
     def visibility(self) -> bool:
@@ -50,6 +51,10 @@ class Post(models.Model):
             raise TypeError("O valor passado dentro desse campo deve ser um usuário")
         self._owner = value
 
+    @property
+    def date_created(self) -> None:
+        return self._date_created
+    
     def __str__(self) -> None:
         return f"{self.title} {self.owner}: {self.visibility}"
     
