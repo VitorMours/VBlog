@@ -11,3 +11,11 @@
     border: 1px solid #d1d5db;
     font-size: 1rem;
 }
+.material-symbols-outlined {
+    transition: all 0.2s ease-in-out;
+}   
+
+.material-symbols-outlined:hover {
+    cursor: pointer;
+    transform: scale(1.1);
+}
