@@ -1,1 +1,1 @@
-from .test_common_pages import *
+from .test_pages_methods_views import *
