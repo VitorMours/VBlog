@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
+from django.contrib.auth import authenticate
 from blog.forms import LoginForm, SigninForm
+from django.contrib.auth.models import User
 
 def index(request):
     if request.method == "GET":
@@ -26,7 +28,14 @@ def signin(request):
     elif request.method == "POST":
         form = SigninForm(request.POST)
         if form.is_valid():
-
+            new_user = User(
+                first_name = form.cleaned_data["first_name"],
+                last_name = form.cleaned_data["last_name"],
+                username = form.cleaned_data["username"],
+                email = form.cleaned_data["email"],
+            )
+            new_user.set_password(form.cleaned_data["password"])
+            new_user.save()
             return redirect("dashboard")
         
         return render(request, "signin.html", { "form" : form })
