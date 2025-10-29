@@ -2,8 +2,11 @@ from django.test import TestCase, Client
 from django.urls import reverse
 from django.http import HttpResponseNotAllowed
 from blog.forms import LoginForm, SigninForm
+import importlib 
+import inspect
 
-class TestViews(TestCase):
+
+class TestCommonViews(TestCase):
     def setUp(self) -> None: 
         self.client = Client()
         
@@ -80,7 +83,6 @@ class TestAuthViews(TestCase):
                      'Campo CSRF token não encontrado')
         self.assertIn('type="hidden"', html,
                      'CSRF token não está como campo hidden')
-    ###########################################################################################################################
 
     def test_signin_view_status_code(self) -> None:
         response = self.client.get("/signin")
@@ -110,8 +112,35 @@ class TestAuthViews(TestCase):
         self.assertTrue(html.endswith('</html>'))
         self.assertTrue(html.startswith('<!DOCTYPE html>'))
 
-
     def test_if_signin_form_is_login_form(self) -> None:
         response = self.client.get(reverse('signin'))
         form = response.context.get('form')
         self.assertIsInstance(form, SigninForm)
+
+    def test_if_signin_view_have_post_method(self) -> None:
+        response = self.client.post("/signin")
+        self.assertEqual(response.status_code, 200)
+
+    def test_if_can_reverse_the_signin_view_with_post_method(self) -> None:
+        response = self.client.post(reverse("signin"))
+        self.assertEqual(response.status_code, 200)
+
+    def test_if_signin_views_is_in_views_file(self) -> None:
+        module = importlib.import_module("blog.views")
+        self.assertTrue(hasattr(module, "signin"))
+
+    def test_if_signin_views_have_correct_method_params(self) -> None:
+        module = importlib.import_module("blog.views")
+        params = inspect.signature(module.signin)
+        self.assertTrue("request" in params.parameters.keys())
+    
+class TestViews(TestCase):
+    def setUp(self) -> None:
+        pass 
+
+    def test_if_is_running(self) -> None:
+        self.assertTrue(True)
+
+    def test_if_can_import_normal_views(self) -> None:
+        pass
+

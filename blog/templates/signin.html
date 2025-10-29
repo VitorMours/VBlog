@@ -1,9 +1,11 @@
 {% extends 'partials/base.html' %} 
-{% block title %} - Login{% endblock %} 
+{% load widget_tweaks %}
+
+{% block title %} - Cadastro{% endblock %} 
 
 {% block content %}
 <main class="bg-stone-100 min-h-screen w-full flex justify-center items-center">
-    <section class="bg-white shadow-lg rounded-xl p-8 w-1/2 mx-4">
+    <section class="bg-white shadow-lg rounded-xl p-8 w-full max-w-lg mx-4">
         <div class="text-center mb-8">
             <h1 class="text-3xl font-bold text-gray-800">Crie seu cadastro</h1>
             <p class="text-gray-600 mt-2">Fazer registro dentro da aplicação</p>
@@ -12,30 +14,95 @@
         <form class="flex flex-col space-y-6 w-full items-start" method="post">
             {% csrf_token %}
 
-            {% for field in form %}
+            <div class="flex w-full space-x-4">
+                
+                {% with field=form.first_name %}
+                    <div class="form-group w-1/2">
+                        <label for="{{ field.id_for_label }}" class="pb-1 text-gray-700 font-medium">
+                            {{ field.label }}
+                        </label>
+                        {{ field|add_class:"w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" }}
+                        
+                        {% if field.help_text %}
+                            <small class="form-text text-gray-500 text-xs mt-1">{{ field.help_text }}</small>
+                        {% endif %}
 
+                        {% if field.errors %}
+                            <ul class="error-list text-red-500 text-sm mt-1">
+                                {% for error in field.errors %}
+                                    <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </div>
+                {% endwith %}
+
+                {% with field=form.last_name %}
+                    <div class="form-group w-1/2">
+                        <label for="{{ field.id_for_label }}" class="pb-1 text-gray-700 font-medium">
+                            {{ field.label }}
+                        </label>
+                        {{ field|add_class:"w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" }}
+
+                        {% if field.help_text %}
+                            <small class="form-text text-gray-500 text-xs mt-1">{{ field.help_text }}</small>
+                        {% endif %}
+
+                        {% if field.errors %}
+                            <ul class="error-list text-red-500 text-sm mt-1">
+                                {% for error in field.errors %}
+                                    <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </div>
+                {% endwith %}
+            </div>
+
+            {% with field=form.email %}
                 <div class="form-group w-full">
-                    <label for="{{ field.id_for_label }}" class="pb-1">
+                    <label for="{{ field.id_for_label }}" class="pb-1 text-gray-700 font-medium">
                         {{ field.label }}
                     </label>
-                    {{ field }}
+                    {{ field|add_class:"w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" }}
+                    
                     {% if field.help_text %}
-                        <small class="form-text text-muted">{{ field.help_text }}</small>
+                        <small class="form-text text-gray-500 text-xs mt-1">{{ field.help_text }}</small>
                     {% endif %}
 
                     {% if field.errors %}
-                        <ul class="error-list">
+                        <ul class="error-list text-red-500 text-sm mt-1">
                             {% for error in field.errors %}
-                                {{ error }}
+                                <li>{{ error }}</li>
                             {% endfor %}
                         </ul>
                     {% endif %}
                 </div>
+            {% endwith %}
 
-            {% endfor %}
+            {% with field=form.password %}
+                <div class="form-group w-full">
+                    <label for="{{ field.id_for_label }}" class="pb-1 text-gray-700 font-medium">
+                        {{ field.label }}
+                    </label>
+                    {{ field|add_class:"w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" }}
+
+                    {% if field.help_text %}
+                        <small class="form-text text-gray-500 text-xs mt-1">{{ field.help_text }}</small>
+                    {% endif %}
+
+                    {% if field.errors %}
+                        <ul class="error-list text-red-500 text-sm mt-1">
+                            {% for error in field.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+            {% endwith %}
             
-            <div class="flex w-full items-center justify-center">
-                <button type="submit" class="w-50 flex justify-center items-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-200">
+            <div class="flex w-full items-center justify-center pt-4">
+                <button type="submit" class="w-full py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-200">
                     Criar conta
                 </button>
             </div>
@@ -43,7 +110,7 @@
         
         <div class="mt-6 text-center">
             <p class="text-sm text-gray-600">
-                Ja tem uma conta?
+                Já tem uma conta?
                 <a href="#" class="font-medium text-blue-600 hover:text-blue-500 ml-1">Fazer Login</a>
             </p>
         </div>

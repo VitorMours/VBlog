@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from blog.forms import LoginForm, SigninForm
 
@@ -18,9 +18,20 @@ def login(request):
         return render(request, 'login.html', { "form" : form })
     else:
         return HttpResponse("You can't use this HTTP method here", status=405)
+
 def signin(request):
     if request.method == "GET":
         form = SigninForm()
         return render(request, 'signin.html', { "form" : form })
+    elif request.method == "POST":
+        form = SigninForm(request.POST)
+        if form.is_valid():
+
+            return redirect("dashboard")
+        
+        return render(request, "signin.html", { "form" : form })
     else:
         return HttpResponse("You can't use this HTTP method here", status=405)
+
+def dashboard(request):
+    return render(request, "dashboard.html")
