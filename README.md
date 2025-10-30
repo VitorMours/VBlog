@@ -8,10 +8,13 @@
   </a>
 </p>
 
-Temos que o vblog é um projeto desenvolvido em **Django** e que usa como banco de dados o MySQL, e para visualização dos dados de forma facilitada,
-o **phpMyAdmin**. Esse projeto tem como foco, sedimentar conhecimentos adquiridos sobre TDD, de forma que facilite o entendimento desse conceito fundamental 
-dentro do desenvolvimento de software, e de forma que torne o desenvolvimento de features, refatoração, e modificação de elementos mais seguro, com padronizações, 
+Temos que o vblog é um projeto desenvolvido em **Django** e que usa como banco de dados o MySQL, para visualização dos dados de forma facilitada,
+o **phpMyAdmin** no lado do administrador. Esse projeto tem como foco, sedimentar conhecimentos adquiridos sobre TDD, de forma que facilite o entendimento desse conceito 
+fundamental dentro do desenvolvimento de software, e de forma que torne o desenvolvimento de features, refatoração, e modificação de elementos mais seguro, com padronizações, 
 e que efeitos colaterais e bugs sejam detectados com maior rapidez, e clareza do seu acontecimento.
+
+Também tem como objetivo, o desenvolvimento de uma aplicação usando **Clean Arctecture** para criar maior familiaridade com esse padrão arquitetural, possibilitando a 
+sedimentação desses conhecimentos arquteturais na prática.
 
 ## Stack de Desenvolvimento
 Dentro do desenvolvimento da aplicação, algumas tecnologias específicas foram utilizadas com o intuito de promover uma melhor experiência tanto para o usuário quando 
