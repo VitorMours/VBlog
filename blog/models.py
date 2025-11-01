@@ -52,4 +52,4 @@ class Post(models.Model):
 
     def __str__(self) -> None:
         return f"{self.title} {self.owner}: {self.visibility}"
-    
+

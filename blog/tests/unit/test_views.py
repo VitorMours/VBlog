@@ -1,9 +1,12 @@
 from django.test import TestCase, Client
 from django.urls import reverse
 from django.http import HttpResponseNotAllowed
-from blog.forms import LoginForm
+from blog.forms import LoginForm, SigninForm
+import importlib 
+import inspect
 
-class TestViews(TestCase):
+
+class TestCommonViews(TestCase):
     def setUp(self) -> None: 
         self.client = Client()
         
@@ -73,17 +76,71 @@ class TestAuthViews(TestCase):
         self.assertIn('<form', html, "A página não contém nenhum formulário")
         self.assertIn('</form>', html, "A página não contém nenhum formulário")
 
-
     def test_if_login_is_using_csrf(self) -> None:
         response = self.client.get('/login')
         html = response.content.decode('utf-8')        
-        # Verifica a presença do campo CSRF
         self.assertIn('name="csrfmiddlewaretoken"', html,
                      'Campo CSRF token não encontrado')
-        
-        # Verifica se é um campo hidden (geralmente é)
         self.assertIn('type="hidden"', html,
                      'CSRF token não está como campo hidden')
-        
-    def test_if_login_credential_input_exists(self) -> None:
+
+    def test_signin_view_status_code(self) -> None:
+        response = self.client.get("/signin")
+        self.assertEqual(response.status_code, 200)
+
+    def test_signin_view_status_code_reverse(self) -> None: 
+        response = self.client.get(reverse('signin'))
+        self.assertEqual(response.status_code, 200)
+
+    def test_if_signin_page_have_form(self) -> None:
+        response = self.client.get('/login')
+        html = response.content.decode("utf-8")
+        self.assertIn('<form', html, "A página não contém nenhum formulário")
+        self.assertIn('</form>', html, "A página não contém nenhum formulário")
+
+    def test_if_signin_is_using_csrf(self) -> None:
+        response = self.client.get('/signin')
+        html = response.content.decode('utf-8')        
+        self.assertIn('name="csrfmiddlewaretoken"', html,
+                        'Campo CSRF token não encontrado')
+        self.assertIn('type="hidden"', html,
+                        'CSRF token não está como campo hidden')
+    
+    def test_if_signin_page_is_correct(self) -> None:
+        response = self.client.get('/signin')
+        html = response.content.decode("utf-8")
+        self.assertTrue(html.endswith('</html>'))
+        self.assertTrue(html.startswith('<!DOCTYPE html>'))
+
+    def test_if_signin_form_is_login_form(self) -> None:
+        response = self.client.get(reverse('signin'))
+        form = response.context.get('form')
+        self.assertIsInstance(form, SigninForm)
+
+    def test_if_signin_view_have_post_method(self) -> None:
+        response = self.client.post("/signin")
+        self.assertEqual(response.status_code, 200)
+
+    def test_if_can_reverse_the_signin_view_with_post_method(self) -> None:
+        response = self.client.post(reverse("signin"))
+        self.assertEqual(response.status_code, 200)
+
+    def test_if_signin_views_is_in_views_file(self) -> None:
+        module = importlib.import_module("blog.views")
+        self.assertTrue(hasattr(module, "signin"))
+
+    def test_if_signin_views_have_correct_method_params(self) -> None:
+        module = importlib.import_module("blog.views")
+        params = inspect.signature(module.signin)
+        self.assertTrue("request" in params.parameters.keys())
+    
+class TestViews(TestCase):
+    def setUp(self) -> None:
+        pass 
+
+    def test_if_is_running(self) -> None:
+        self.assertTrue(True)
+
+    def test_if_can_import_normal_views(self) -> None:
         pass
+
