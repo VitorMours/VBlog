@@ -84,6 +84,33 @@ class TestAuthViews(TestCase):
         self.assertIn('type="hidden"', html,
                      'CSRF token não está como campo hidden')
 
+    def test_if_login_view_can_process_post_request(self) -> None:
+        response = self.client.post("/login")
+        self.assertEqual(response.status_code, 200)
+    
+    def test_if_wrong_data_return_to_login_template(self) -> None:
+        response = self.client.post("/login")
+        self.assertTrue(response.status_code, 200)
+        self.assertTemplateUsed(response, "login.html")
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     def test_signin_view_status_code(self) -> None:
         response = self.client.get("/signin")
         self.assertEqual(response.status_code, 200)

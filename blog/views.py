@@ -18,6 +18,9 @@ def login(request):
     if request.method == "GET":
         form = LoginForm()
         return render(request, 'login.html', { "form" : form })
+    elif request.method == "POST":
+        form = LoginForm(request.POST)
+        return render(request, 'login.html', { "form" : form })
     else:
         return HttpResponse("You can't use this HTTP method here", status=405)
 
