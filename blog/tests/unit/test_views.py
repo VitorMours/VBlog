@@ -2,6 +2,7 @@ from django.test import TestCase, Client
 from django.urls import reverse
 from django.http import HttpResponseNotAllowed
 from blog.forms import LoginForm, SigninForm
+from django.contrib.auth.models import User
 import importlib 
 import inspect
 
@@ -39,6 +40,12 @@ class TestCommonViews(TestCase):
     
 class TestAuthViews(TestCase):
     def setUp(self) -> None:
+        self.mock_user = User.objects.create_user(
+                    username='testuser', 
+                    email='email@email.com', 
+                    password='12313asd!'
+                )
+
         self.client = Client()
         
     def test_if_login_view_status_code(self) -> None:
@@ -83,6 +90,32 @@ class TestAuthViews(TestCase):
                      'Campo CSRF token não encontrado')
         self.assertIn('type="hidden"', html,
                      'CSRF token não está como campo hidden')
+
+    def test_if_login_view_return_error_with_wrong_http_method(self) -> None:
+        response_put = self.client.put("/login")
+        response_delete = self.client.delete("/login")
+        self.assertNotEqual(response_put.status_code, 200)
+        self.assertNotEqual(response_delete.status_code, 200)
+        self.assertEqual(response_put.status_code, 405)
+        self.assertEqual(response_delete.status_code, 405)
+
+    def test_if_login_view_can_post_the_form_with_incorrect_data(self) -> None:
+        form_data = {
+            "username":"emaila@email.com",
+            "password":"12313asd!"
+        }
+        response = self.client.post("/login", data=form_data, csrf_token=False)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed("login.html")
+
+#    def test_if_login_view_can_post_the_form_correctly(self) -> None:
+#        form_data = {
+#            "username":'testuser', 
+#            "email":'email@email.com', 
+#            "password":'12313asd!'
+#        }
+#        response = self.client.post("/login", data=form_data, csrf_token=False)
+#        self.assertEqual(response.status_code, 200)
 
     def test_signin_view_status_code(self) -> None:
         response = self.client.get("/signin")
