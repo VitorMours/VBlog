@@ -1,10 +1,42 @@
 from django.test import TestCase 
 from blog.models import Post
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser, UserManager, BaseUserManager
+from django.contrib.auth import get_user_model
+import importlib 
+import inspect
+
+User = get_user_model()
+
+class TestCustomUserModel(TestCase):
+    def setUp(self) -> None:
+        pass 
+    
+    def test_if_is_running(self) -> None:
+        self.assertTrue(True)
+
+    def test_if_class_custom_user_exists(self) -> None:
+        module = importlib.import_module("blog.models")
+        self.assertTrue(hasattr(module, "CustomUser"))
+
+    def test_if_class_is_abstract_user_sub_class(self) -> None:
+        module = importlib.import_module("blog.models")
+        class_ = module.CustomUser
+        self.assertTrue(issubclass(class_, AbstractUser))
+
+    def test_if_custom_user_class_have_manager(self) -> None:
+        module = importlib.import_module("blog.models")
+        class_ = module.CustomUser
+        self.assertTrue(hasattr(class_, "objects"))
+
+    def test_if_custom_user_objects_is_a_manager(self) -> None:
+        module = importlib.import_module("blog.models")
+        class_ = module.CustomUser
+        self.assertTrue(isinstance(class_.objects, BaseUserManager))
+
 
 class TestPostModel(TestCase):
     def setUp(self) -> None:
-        mock_user = User("vitor moura","vitormoura@gmail.com","password")
+        mock_user = User(first_name="vitor moura",email="vitormoura@gmail.com",password="password")
 
         self.mock_post = Post(
             title = "New post",
@@ -64,9 +96,7 @@ class TestPostModel(TestCase):
             post = Post(
                 owner=123
             )
-    def test_if_user_field_exists_in_model(self) -> None:
-        self.assertTrue(hasattr(Post, "user"))
         
-    def test_name_equals_emoji(self) -> None: #TODO: Verificar a remoção de emojis como possibilidade de serem passados dentro do banco de dados
+    def test_name_equals_emoji(self) -> None:
         user = User(username="😊")
         self.assertEqual(user.username, "😊")

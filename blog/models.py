@@ -1,14 +1,46 @@
 from django.db import models
-from django.contrib.auth.models import User
+import __future__
+from django.contrib.auth.models import User, AbstractUser, BaseUserManager
 import uuid
+
+class CustomUserManager(BaseUserManager):
+    def create_user(self, email, password, **extra_fields) -> "CustomUser": # type: ignore
+        if not email:
+            raise ValueError("The email field must be set")
+        elif not password:
+            raise ValueError("The password field must be set")
+        
+        email = self.normalize_email(email)
+        user = self.model(email=email, password=password, **extra_fields)
+        user.set_password(password)
+        user.save(using=self._db)
+
+    def create_superuser(self, email, password, **extra_fields) -> "CustomUser": # type: ignore
+        if not email or not password:
+            raise ValueError("The email field must be set")
+        
+        email = self.normalize_email(email)
+
+        extra_fields.setdefault("is_staff", True)
+        extra_fields.setdefault("is_superuser", True)
+        extra_fields.setdefault("is_active", True)
+
+        return self.create_user(email=email, password=password, **extra_fields)
+
+
+class CustomUser(AbstractUser):
+    objects = CustomUserManager() # type: ignore
+
+    REQUIRED_FIELDS = ["email","password"]
+    USERNAME_FIELDS = ["email"]
+
 
 class Post(models.Model):
     id = models.UUIDField(primary_key=True, null=False, blank=False, default=uuid.uuid4)
     _title = models.CharField(max_length=100, null=False, blank=False)
     _content = models.TextField(null=False, blank=False)
     _visibility = models.BooleanField(default=False, null=False, blank=False)
-    _owner = models.ForeignKey(User, on_delete=models.CASCADE)
-    user = models.CharField()
+    _owner = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
 
     @property
     def visibility(self) -> bool:
@@ -41,12 +73,12 @@ class Post(models.Model):
         self._content = value
 
     @property
-    def owner(self) -> User:
+    def owner(self) -> CustomUser:
         return self._owner 
 
     @owner.setter 
     def owner(self, value) -> TypeError | None:
-        if not isinstance(value, User):
+        if not isinstance(value, CustomUser):
             raise TypeError("O valor passado dentro desse campo deve ser um usuário")
         self._owner = value
 

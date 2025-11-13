@@ -21,12 +21,19 @@ def login(request):
 
     elif request.method == "POST":
         form = LoginForm(request.POST)
+        
         if form.is_valid():
-            return HttpResponse("Good!", status=200)
-            # precisa adicionar a autenticacao e todos os outros processos
+            email = form.cleaned_data["email"]
+            password = form.cleaned_data["password"]
+
+            user = authenticate(request, email=email, password=password) # Armazena o resultado
+
+            if user is not None:
+                return HttpResponse("Good!", status=200)
+            else:
+                return render(request, 'login.html', { "form" : form }) 
         else:
             return render(request, 'login.html', { "form" : form })
-
 
     else:
         return HttpResponse("You can't use this HTTP method here", status=405)
@@ -41,11 +48,11 @@ def signin(request):
             new_user = User(
                 first_name = form.cleaned_data["first_name"],
                 last_name = form.cleaned_data["last_name"],
-                username = form.cleaned_data["username"],
                 email = form.cleaned_data["email"],
             )
             new_user.set_password(form.cleaned_data["password"])
             new_user.save()
+            print(new_user)
             return redirect("dashboard")
         return render(request, "signin.html", { "form" : form })
     else:

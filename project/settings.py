@@ -14,7 +14,7 @@ from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+AUTH_USER_MODEL = "blog.CustomUser"
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
@@ -27,6 +27,13 @@ SECRET_KEY = 'django-insecure-ebt_9be1w$ha!&#@kt&$fq@gt^%eq33!a-#6@q@5309f+&s%oa
 DEBUG = True
 
 ALLOWED_HOSTS = []
+
+
+INTERNAL_IPS = [
+    'localhost',
+    '127.0.0.1',
+    'animated-pancake-wxp9q67gwjjhv5pp-8000.app.github.dev',
+]
 
 CSRF_TRUSTED_ORIGINS = [
     'https://localhost:8000',
@@ -43,11 +50,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'debug_toolbar',
     'widget_tweaks',
     'blog',
 ]
 
 MIDDLEWARE = [
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',

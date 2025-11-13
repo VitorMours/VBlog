@@ -2,6 +2,9 @@ from django.test import TestCase
 from unittest import skip
 from blog.forms import SigninForm, LoginForm
 from django import forms
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 class TestLoginForm(TestCase):
     def setUp(self) -> None:

@@ -2,10 +2,12 @@ from django.test import TestCase, Client
 from django.urls import reverse
 from django.http import HttpResponseNotAllowed
 from blog.forms import LoginForm, SigninForm
-from django.contrib.auth.models import User
 import importlib 
 import inspect
 
+from django.contrib.auth import get_user_model 
+
+User = get_user_model()
 
 class TestCommonViews(TestCase):
     def setUp(self) -> None: 
@@ -43,7 +45,7 @@ class TestAuthViews(TestCase):
         self.mock_user = User.objects.create_user(
                     username='testuser', 
                     email='email@email.com', 
-                    password='12313asd!'
+                    password='123123asd!'
                 )
 
         self.client = Client()
@@ -101,21 +103,20 @@ class TestAuthViews(TestCase):
 
     def test_if_login_view_can_post_the_form_with_incorrect_data(self) -> None:
         form_data = {
-            "username":"emaila@email.com",
+            "username":"emaial@email.com",
             "password":"12313asd!"
         }
         response = self.client.post("/login", data=form_data, csrf_token=False)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed("login.html")
 
-#    def test_if_login_view_can_post_the_form_correctly(self) -> None:
-#        form_data = {
-#            "username":'testuser', 
-#            "email":'email@email.com', 
-#            "password":'12313asd!'
-#        }
-#        response = self.client.post("/login", data=form_data, csrf_token=False)
-#        self.assertEqual(response.status_code, 200)
+    def test_if_login_view_can_post_the_form_correctly(self) -> None:
+        form_data = {
+            "email":'email@email.com', 
+            "password":'123123asd!'
+        }
+        response = self.client.post("/login", data=form_data, csrf_token=False)
+        self.assertEqual(response.status_code, 200)
 
     def test_signin_view_status_code(self) -> None:
         response = self.client.get("/signin")
