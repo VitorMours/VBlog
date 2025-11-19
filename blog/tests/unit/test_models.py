@@ -34,6 +34,14 @@ class TestCustomUserModel(TestCase):
         self.assertTrue(isinstance(class_.objects, BaseUserManager))
 
 
+class TestCustomUserManagerModel(TestCase):
+    def setUp(self) -> None:
+        pass 
+
+    def test_if_is_being_called(self) -> None:
+        self.assertTrue(True)
+
+
 class TestPostModel(TestCase):
     def setUp(self) -> None:
         mock_user = User(first_name="vitor moura",email="vitormoura@gmail.com",password="password")
@@ -100,3 +108,7 @@ class TestPostModel(TestCase):
     def test_name_equals_emoji(self) -> None:
         user = User(username="😊")
         self.assertEqual(user.username, "😊")
+
+
+class TestExpenseModel(TestCase):
+    pass

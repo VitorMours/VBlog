@@ -13,3 +13,7 @@ class TestAuthViews(TestCase):
         self.assertTrue(hasattr(urls, "urlpatterns"))
 
     
+#    def test_if_the_dashboard_view_use_correct_template_when_can_login(self) -> None:
+#        response = self.client.get("/dashboard")
+#        self.assertEqual(response.status_code, 302)
+#        self.assertTemplateUsed(response, "dashboard.html")

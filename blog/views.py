@@ -1,8 +1,12 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, get_user_model
+from django.contrib.auth import login as auth_login 
+from django.contrib.auth import logout as auth_logout
 from blog.forms import LoginForm, SigninForm
-from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required, permission_required
+
+User = get_user_model()
 
 def index(request):
     if request.method == "GET":
@@ -26,10 +30,11 @@ def login(request):
             email = form.cleaned_data["email"]
             password = form.cleaned_data["password"]
 
-            user = authenticate(request, email=email, password=password) # Armazena o resultado
-
+            user = authenticate(request, email=email, password=password)
+            print(user)
             if user is not None:
-                return HttpResponse("Good!", status=200)
+                auth_login(request, user)
+                return redirect("dashboard")
             else:
                 return render(request, 'login.html', { "form" : form }) 
         else:
@@ -38,25 +43,31 @@ def login(request):
     else:
         return HttpResponse("You can't use this HTTP method here", status=405)
 
+def logout(request) -> None:
+    logout(request)
+
 def signin(request):
     if request.method == "GET":
         form = SigninForm()
         return render(request, 'signin.html', { "form" : form })
+    
     elif request.method == "POST":
         form = SigninForm(request.POST)
         if form.is_valid():
             new_user = User(
                 first_name = form.cleaned_data["first_name"],
                 last_name = form.cleaned_data["last_name"],
-                email = form.cleaned_data["email"],
+                email = form.cleaned_data["email"]
             )
             new_user.set_password(form.cleaned_data["password"])
             new_user.save()
-            print(new_user)
+            auth_login(request, new_user)
             return redirect("dashboard")
         return render(request, "signin.html", { "form" : form })
     else:
         return HttpResponse("You can't use this HTTP method here", status=405)
 
+
+@login_required(login_url="/login")
 def dashboard(request):
     return render(request, "dashboard.html")

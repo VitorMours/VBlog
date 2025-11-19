@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path
-from .views import index, about, login, signin, dashboard
+from .views import index, about, login, signin, dashboard, logout
 
 urlpatterns = [
     path('', index, name="index"),
@@ -8,4 +8,5 @@ urlpatterns = [
     path('login', login, name="login"),
     path('signin', signin, name="signin"),
     path('dashboard', dashboard, name="dashboard"),
+    path('logout', logout, name="logout")
 ]

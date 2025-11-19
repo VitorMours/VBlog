@@ -116,7 +116,7 @@ class TestAuthViews(TestCase):
             "password":'123123asd!'
         }
         response = self.client.post("/login", data=form_data, csrf_token=False)
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 302)
 
     def test_signin_view_status_code(self) -> None:
         response = self.client.get("/signin")
@@ -168,6 +168,18 @@ class TestAuthViews(TestCase):
         params = inspect.signature(module.signin)
         self.assertTrue("request" in params.parameters.keys())
     
+    def test_if_logout_view_exists(self) -> None:
+        module = importlib.import_module("blog.views")
+        self.assertTrue(hasattr(module, "logout"))
+
+    def test_if_logout_view_function_receive_request_parameter(self) -> None:
+        module = importlib.import_module("blog.views")
+        params = inspect.signature(module.logout)
+        self.assertIn("request", params.parameters.keys())
+
+    
+
+
 class TestViews(TestCase):
     def setUp(self) -> None:
         pass 
@@ -175,6 +187,20 @@ class TestViews(TestCase):
     def test_if_is_running(self) -> None:
         self.assertTrue(True)
 
-    def test_if_can_import_normal_views(self) -> None:
-        pass
+    def test_if_can_import_dashboard_view(self) -> None:
+        module = importlib.import_module("blog.views")
+        self.assertTrue(hasattr(module, "dashboard"))
 
+    def test_if_can_import_about_page_view(self) -> None:
+        module = importlib.import_module("blog.views")
+        self.assertTrue(hasattr(module, "about"))
+
+    def test_if_about_page_have_header_in_template(self) -> None:
+        response = self.client.get("/about")
+        content = response.content.decode("utf-8")
+        self.assertIn("<header>", content, "O header não foi colocado no template")
+        self.assertIn("</header>", content, "O header não foi fechado")
+
+    def test_if_about_page_have_correct_template(self) -> None:
+        response = self.client.get("/about")
+        self.assertTemplateUsed(response, "about.html")

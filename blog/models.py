@@ -30,10 +30,15 @@ class CustomUserManager(BaseUserManager):
 
 class CustomUser(AbstractUser):
     objects = CustomUserManager() # type: ignore
+    username = models.CharField(unique=False)
+    email = models.EmailField(
+        unique=True,
+        null=False,
+        blank=False
+    )
 
-    REQUIRED_FIELDS = ["email","password"]
-    USERNAME_FIELDS = ["email"]
-
+    REQUIRED_FIELDS = ["password"]
+    USERNAME_FIELD = "email"
 
 class Post(models.Model):
     id = models.UUIDField(primary_key=True, null=False, blank=False, default=uuid.uuid4)

@@ -74,3 +74,7 @@ class TestAuthUrls(TestCase):
         response_delete = self.client.delete(reverse('signin'))
         self.assertEqual(response_put.status_code, 405)
         self.assertEqual(response_delete.status_code, 405)
+
+    def test_if_logout_route_resolves(self) -> None:
+        response = self.client.get("/logout")
+        self.assertEqual(response.status_code, 200)
