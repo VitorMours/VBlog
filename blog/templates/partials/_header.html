@@ -17,7 +17,7 @@
                 <div class="space-x-8">
                     {% if user.is_authenticated %}
                         <a href="{% url 'login' %}" class="mr-4 hover:underline">Profile</a>
-                        <a href="{% url 'signin' %}" class="hover:underline">Logout</a>
+                        <a href="{% url 'logout' %}" class="hover:underline">Logout</a>
                     {% else %}
                         <a href="{% url 'login' %}" class="mr-4 hover:underline">Login</a>
                         <a href="{% url 'signin' %}" class="hover:underline">Signin</a>

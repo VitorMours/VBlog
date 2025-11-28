@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate, get_user_model
 from django.contrib.auth import login as auth_login 
 from django.contrib.auth import logout as auth_logout
 from blog.forms import LoginForm, SigninForm
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required
 
 User = get_user_model()
@@ -19,6 +20,9 @@ def about(request):
         return render(request, 'about.html')
     
 def login(request):
+    if request.user.is_authenticated:
+            return redirect("dashboard")
+
     if request.method == "GET":
         form = LoginForm()
         return render(request, 'login.html', { "form" : form })
@@ -26,16 +30,17 @@ def login(request):
     elif request.method == "POST":
         form = LoginForm(request.POST)
         
+        
         if form.is_valid():
             email = form.cleaned_data["email"]
             password = form.cleaned_data["password"]
 
             user = authenticate(request, email=email, password=password)
-            print(user)
             if user is not None:
                 auth_login(request, user)
                 return redirect("dashboard")
             else:
+                messages.error(request, "Email ou senha incorretos. Por favor, tente novamente.")
                 return render(request, 'login.html', { "form" : form }) 
         else:
             return render(request, 'login.html', { "form" : form })
@@ -44,7 +49,8 @@ def login(request):
         return HttpResponse("You can't use this HTTP method here", status=405)
 
 def logout(request) -> None:
-    logout(request)
+    auth_logout(request)
+    return redirect("index")
 
 def signin(request):
     if request.method == "GET":
