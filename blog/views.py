@@ -76,4 +76,9 @@ def signin(request):
 
 @login_required(login_url="/login")
 def dashboard(request):
-    return render(request, "dashboard.html")
+
+    context = {
+        "username":request.user.first_name,
+    }
+
+    return render(request, "dashboard.html", context=context)
