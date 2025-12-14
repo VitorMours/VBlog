@@ -33,6 +33,7 @@ class TestRecentView(TestCase):
         self.assertIn("/login", response.url, "The 'recents' view does not redirect to login for unauthenticated users.")
 
 
+
 class TestCreatePostView(TestCase):
     
     def setUp(self) -> None: 
@@ -55,3 +56,23 @@ class TestCreatePostView(TestCase):
     # def test_if_create_post_view_use_correct_template(self) -> None:
     #     response = self.client.get("/create_post")
     #     self.assertTemplateUsed(response, "create_post.html")
+    
+    
+    
+class TestRelevantView(TestCase):
+    
+    def setUp(self) -> None: 
+        self.client = Client()
+        
+    def test_if_relevant_view_exists(self) -> None:
+        module = importlib.import_module("blog.views")
+        self.assertTrue(hasattr(module, "relevant"))
+        
+    def test_if_relevant_view_have_url_registered(self) -> None:
+        response = self.client.get(reverse("relevant"))
+        self.assertTrue(response)
+        
+    def test_if_relevant_view_have_correct_signature(self) -> None: 
+        module = importlib.import_module("blog.views")
+        signature_ = signature(module.relevant).parameters
+        self.assertIn("request", signature_)

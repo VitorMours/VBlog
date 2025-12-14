@@ -1,8 +1,38 @@
-{% extends "partials/base.html" %}
-{% block title %} - Recents {% endblock title %}
+{% extends "partials/base.html" %} {% block title %} - Recents {% endblock title%} 
 
 {% block content %}
+<main class="bg-stone-100 w-full h-screen">
+  <div class="container pt-10 mx-50">
+    <h2 class="text-xl font-bold pb-5">Posts Recentes</h2>
 
+    {% if posts %}
+    <div class="list-group">
+      {% for post in posts %}
+      <a href="#" class="list-group-item list-group-item-action mb-3 card">
+        <div
+          class="bg-white shadow-sm border border-gray-200 p-5 flex w-full justify-between hover:bg-gray-100 transition duration-300 easy-in-out"
+        >
+            <h5 class="mb-1">{{ post.title }}</h5>
+            <div>
+                <small class="text-muted">
+                Publicado em: {{ post.created_at|date:"d/m/Y H:i" }}
+                </small>
+                -
+                <small class="text-muted">
+                {{ post.owner.first_name }} {{ post.owner.last_name }}
+                </small>
+            </div>
+        </div>
 
+      </a>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="alert alert-info" role="alert">
+      Ainda não há posts recentes para exibir.
+    </div>
+    {% endif %}
+  </div>
+</main>
 
 {% endblock content %}

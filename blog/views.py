@@ -6,6 +6,7 @@ from django.contrib.auth import logout as auth_logout
 from blog.forms import LoginForm, SigninForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required
+from blog.models import Post
 
 User = get_user_model()
 
@@ -85,7 +86,13 @@ def dashboard(request):
 
 @login_required(login_url="/login")
 def recents(request):
-    return render(request, "recents.html")
+    if request.method != "GET":
+        return HttpResponse("You can't use this HTTP method here", status=405)
+
+    posts = Post.objects.all().order_by("-_created_at")
+    context = { "posts": posts }
+
+    return render(request, "recents.html", context=context)
 
 @login_required(login_url="/login")
 def create_post(request):

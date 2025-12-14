@@ -43,10 +43,13 @@ class CustomUser(AbstractUser):
 class Post(models.Model):
     id = models.UUIDField(primary_key=True, null=False, blank=False, default=uuid.uuid4, editable=False)
     _title = models.CharField(max_length=100, null=False, blank=False)
+    # _url = models.SlugField(unique=True, editable=False)
     _content = models.TextField(null=False, blank=False)
     _visibility = models.BooleanField(default=False, null=False, blank=False)
     _owner = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-
+    _created_at = models.DateTimeField(auto_now_add=True)
+    _updated_at = models.DateTimeField(auto_now=True)
+    
     @property
     def visibility(self) -> bool:
         return self._visibility
@@ -87,6 +90,30 @@ class Post(models.Model):
             raise TypeError("O valor passado dentro desse campo deve ser um usuário")
         self._owner = value
 
+    @property
+    def created_at(self):
+        return self._created_at
+
+    @property
+    def updated_at(self):
+        return self._updated_at
+    
+    @created_at.setter
+    def created_at(self):
+        return self._created_at
+    
+    @updated_at.setter
+    def updated_at(self):
+        return self._updated_at
+    
+    # @property
+    # def url(self):
+        # return self._url
+    
+    # @url.setter
+    # def url(self):
+        # return self._url
+    
     def __str__(self) -> None:
         return f"{self.title} {self.owner}: {self.visibility}"
 
