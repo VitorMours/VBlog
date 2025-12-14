@@ -41,7 +41,7 @@ class CustomUser(AbstractUser):
     USERNAME_FIELD = "email"
 
 class Post(models.Model):
-    id = models.UUIDField(primary_key=True, null=False, blank=False, default=uuid.uuid4)
+    id = models.UUIDField(primary_key=True, null=False, blank=False, default=uuid.uuid4, editable=False)
     _title = models.CharField(max_length=100, null=False, blank=False)
     _content = models.TextField(null=False, blank=False)
     _visibility = models.BooleanField(default=False, null=False, blank=False)
