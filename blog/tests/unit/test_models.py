@@ -1,5 +1,6 @@
 from django.test import TestCase 
 from blog.models import Post
+from django.db import models
 from django.contrib.auth.models import AbstractUser, UserManager, BaseUserManager
 from django.contrib.auth import get_user_model
 import importlib 
@@ -109,6 +110,17 @@ class TestPostModel(TestCase):
         user = User(username="😊")
         self.assertEqual(user.username, "😊")
 
+    def test_if_post_model_have_status_field(self) -> None:
+        module = importlib.import_module("blog.models")
+        class_ = module.Post 
+        self.assertTrue(hasattr(class_, "status"))
+        
+    def test_if_post_model_status_field_have_correct_type(self) -> None:
+        module = importlib.import_module("blog.models")
+        class_ = module.Post
+        self.assertEqual(type(class_._meta.get_field("_status")), models.IntegerField)
+       
+       
+        
 
-class TestExpenseModel(TestCase):
-    pass
+

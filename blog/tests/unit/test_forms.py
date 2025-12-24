@@ -1,3 +1,4 @@
+import importlib
 from django.test import TestCase
 from unittest import skip
 from blog.forms import SigninForm, LoginForm
@@ -152,3 +153,24 @@ class TestSigninForm(TestCase):
     @skip("Not implemented yet")
     def test_if_form_raises_error_with_different_password_input(self) -> None:
         pass
+    
+    
+class TestPostForm(TestCase):
+    def setUp(self) -> None:
+        pass 
+    
+    def test_if_its_running(self) -> None:
+        self.assertTrue(True)
+        
+    def test_if_post_form_exists(self) -> None:
+        module = importlib.import_module("blog.forms")
+        self.assertTrue(hasattr(module, "PostForm"))
+        
+    def test_if_form_its_importable(self) -> None:
+        from blog.forms import PostForm
+        
+    def test_if_post_form_have_correct_fields(self) -> None:
+        module = importlib.import_module("blog.forms")
+        form = module.PostForm()
+        self.assertIn("content", form.fields)
+        self.assertIn("title", form.fields)

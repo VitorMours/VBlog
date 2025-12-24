@@ -101,7 +101,7 @@ def relevants(request):
     if request.method != "GET":
         return HttpResponse("You can't use this HTTP method here", status=405)
 
-    posts = Post.objects.all().order_by("-_created_at")
+    posts = Post.objects.all().order_by("-_status")
     context = { "posts": posts }
 
     return render(request, "relevants.html", context=context)
@@ -109,6 +109,7 @@ def relevants(request):
 
 @login_required(login_url="/login")
 def create_post(request):
+    
     return render(request, "create_post.html")
 
 

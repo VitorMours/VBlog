@@ -10,3 +10,6 @@ class LoginForm(forms.Form):
     email = forms.EmailField(label="Email", required=True)
     password = forms.CharField(required=True, widget=forms.PasswordInput(), label="Password")
     
+class PostForm(forms.Form):
+    title = forms.CharField(required=True, label="Type your post title")
+    content = forms.CharField(required=True, label="Type the content of your post")
