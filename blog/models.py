@@ -49,6 +49,7 @@ class Post(models.Model):
     _owner = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     _created_at = models.DateTimeField(auto_now_add=True)
     _updated_at = models.DateTimeField(auto_now=True)
+    _status = models.IntegerField(null=False, default=0)
     
     @property
     def visibility(self) -> bool:
@@ -105,14 +106,14 @@ class Post(models.Model):
     @updated_at.setter
     def updated_at(self):
         return self._updated_at
+
+    @property 
+    def status(self) -> int:
+        return self._status 
     
-    # @property
-    # def url(self):
-        # return self._url
-    
-    # @url.setter
-    # def url(self):
-        # return self._url
+    @status.setter 
+    def status(self, value: int) -> None:
+        self._status = value
     
     def __str__(self) -> None:
         return f"{self.title} {self.owner}: {self.visibility}"

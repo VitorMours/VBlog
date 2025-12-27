@@ -66,13 +66,24 @@ class TestRelevantView(TestCase):
         
     def test_if_relevant_view_exists(self) -> None:
         module = importlib.import_module("blog.views")
-        self.assertTrue(hasattr(module, "relevant"))
+        self.assertTrue(hasattr(module, "relevants"))
         
     def test_if_relevant_view_have_url_registered(self) -> None:
-        response = self.client.get(reverse("relevant"))
+        response = self.client.get(reverse("relevants"))
         self.assertTrue(response)
         
     def test_if_relevant_view_have_correct_signature(self) -> None: 
         module = importlib.import_module("blog.views")
-        signature_ = signature(module.relevant).parameters
+        signature_ = signature(module.relevants).parameters
         self.assertIn("request", signature_)
+        
+    def test_if_gonna_raise_error_with_other_http_verb(self) -> None:
+        response = self.client.post(reverse("relevants"))        
+        self.assertFalse(response.status_code == 200)
+        
+        response = self.client.put(reverse("relevants"))
+        self.assertFalse(response.status_code == 200)
+        
+        response = self.client.delete(reverse("relevants"))
+        self.assertFalse(response.status_code == 200)
+        

@@ -1,31 +1,36 @@
-<header>
+<header class="sticky">
     <nav class="bg-gray-800 p-5 text-white shadow-md">
-        <div class="container mx-auto flex justify-between items-center">
-            <div class="flex gap-4 items-center">
-                <a href="/" id="blog-logo" class="text-xl font-bold">VBlog</a>
-                <div class="space-x-8">
-                    {% if user.is_authenticated %}
-                        <a href="{% url 'index' %}" class="hover:underline">Relevantes</a>
-                        <a href="{% url 'recents' %}" class="hover:underline">Recentes</a>
-                        <a href="{% url 'create_post' %}" class="hover:underline">Criar Post</a>
-                    {% else %}
-                        <a href="{% url 'index' %}" class="mr-4 hover:underline">Home</a>
-                        <a href="{% url 'about' %}" class="hover:underline">About</a>
-                    {% endif %}
-                </div>
+        <div class="container relative w-full mx-auto flex justify-center sm:justify-between items-center">
+            <div id="menu-icon" class="sm:hidden absolute w-8 h-8 left-0 flex flex-col justify-evenly content-evenly hover:cursor-pointer">
+                <span id="line-1" class="block w-full h-1 bg-white rounded"></span>
+                <span id="line-2" class="block w-full h-1 bg-white rounded"></span>
+                <span id="line-3" class="block w-full h-1 bg-white rounded"></span>
             </div>
-            <div>
-                <div class="space-x-8">
-                    {% if user.is_authenticated %}
-                        <a href="{% url 'login' %}" class="mr-4 hover:underline">Profile</a>
-                        <a href="{% url 'logout' %}" class="hover:underline">Logout</a>
-                    {% else %}
-                        <a href="{% url 'login' %}" class="mr-4 hover:underline">Login</a>
-                        <a href="{% url 'signin' %}" class="hover:underline">Signin</a>
-                    {% endif %}
+            <a href="/" id="blog-logo" class="text-xl font-bold">VBlog</a>
+            <div class="ml-5 hidden sm:flex justify-between items-center w-full ">
+                <div>
+                    <div class="space-x-8">
+                        {% if user.is_authenticated %}
+                            <a href="{% url 'relevants' %}" class="hover:underline">Relevantes</a>
+                            <a href="{% url 'recents' %}" class="hover:underline">Recentes</a>
+                            <a href="{% url 'create_post' %}" class="hover:underline">Criar Post</a>
+                        {% else %}
+                            <a href="{% url 'index' %}" class="mr-4 hover:underline">Home</a>
+                            <a href="{% url 'about' %}" class="hover:underline">About</a>
+                        {% endif %}
+                    </div>
+                </div>
+                <div>
+                    <div class="space-x-8">
+                        {% if user.is_authenticated %}
+                            <a href="{% url 'login' %}" class="mr-4 hover:underline">Profile</a>
+                            <a href="{% url 'logout' %}" class="hover:underline">Logout</a>
+                        {% else %}
+                            <a href="{% url 'login' %}" class="mr-4 hover:underline">Login</a>
+                            <a href="{% url 'signin' %}" class="hover:underline">Signin</a>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
         </div>
-
-
 </header>

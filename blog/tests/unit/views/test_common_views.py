@@ -50,7 +50,7 @@ class TestCommonViews(TestCase):
     def test_if_about_page_have_header_in_template(self) -> None:
         response = self.client.get("/about")
         content = response.content.decode("utf-8")
-        self.assertIn("<header>", content, "O header não foi colocado no template")
+        self.assertIn("<header", content, "O header não foi colocado no template")
         self.assertIn("</header>", content, "O header não foi fechado")
 
     def test_if_about_page_have_correct_template(self) -> None:
