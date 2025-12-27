@@ -8,7 +8,8 @@ class TestMessageService(TestCase):
     def setUp(self) -> None:
         self.module_path = "blog.services.message_service"
         self.class_name = "MessageService"
-
+        self.importance_level_values = [10,20,25,30,40]
+        
     def test_if_is_running(self) -> None:
         self.assertTrue(True)
 
@@ -32,10 +33,16 @@ class TestMessageService(TestCase):
         module = importlib.import_module(self.module_path)
         class_ = module.MessageService
         signature = inspect.signature(class_.create_message)
+        self.assertIn("request", signature.parameters.keys())                    
         self.assertIn("message", signature.parameters.keys())                    
         self.assertIn("level", signature.parameters.keys())                    
     
     def test_if_message_service_have_importance_level_system(self) -> None:
+        
         module = importlib.import_module(self.module_path)
         level_class_ = module.MessageImportanceLevel
         self.assertTrue(type(level_class_) is enum.EnumType)
+        value = [level.value for level in level_class_]
+        self.assertEqual(value, self.importance_level_values)
+        
+    

@@ -7,6 +7,8 @@ from blog.forms import LoginForm, SigninForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required
 from blog.models import Post
+from blog.services.message_service import MessageService
+from blog.services.message_service import MessageImportanceLevel
 
 User = get_user_model()
 
@@ -26,6 +28,8 @@ def login(request):
 
     if request.method == "GET":
         form = LoginForm()
+        MessageService.create_message(request, "Login errado", MessageImportanceLevel.DEBUG)
+        MessageService.create_message(request, "Login errado", MessageImportanceLevel.INFO)
         return render(request, 'login.html', { "form" : form })
 
     elif request.method == "POST":

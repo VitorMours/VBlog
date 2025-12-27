@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+from django.contrib.messages import constants as messages 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,19 +27,23 @@ SECRET_KEY = 'django-insecure-ebt_9be1w$ha!&#@kt&$fq@gt^%eq33!a-#6@q@5309f+&s%oa
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+
+if DEBUG:
+    MESSAGE_LEVEL = messages.DEBUG    
+else: 
+    MESSAGE_LEVEL = messages.INFO
+
 ALLOWED_HOSTS = []
 
 
 INTERNAL_IPS = [
     'localhost',
     '127.0.0.1',
-    'animated-pancake-wxp9q67gwjjhv5pp-8000.app.github.dev',
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     'https://localhost:8000',
     'http://127.0.0.1:8000',
-    'https://animated-pancake-wxp9q67gwjjhv5pp-8000.app.github.dev',
 ]
 
 # Application definition

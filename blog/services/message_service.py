@@ -1,4 +1,5 @@
 from django.contrib import messages 
+from django.http import request
 from django.contrib.messages import constants
 import enum
 
@@ -20,11 +21,10 @@ class MessageService:
     """
     
     @classmethod
-    def create_message(cls, message: str, level: MessageImportanceLevel=MessageImportanceLevel.INFO) -> None:
+    def create_message(cls, request: request, message: str, level: MessageImportanceLevel=MessageImportanceLevel.INFO) -> None:
         """
         Method focused in to send the message for the user, and to provide some 
         type of visual feedback to the user about the actionthat it's done. This 
         function actually craete the message and 
         """
-        
-        
+        messages.add_message(request, level.value, message)
