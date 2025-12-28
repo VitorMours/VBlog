@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.contrib.auth import authenticate, get_user_model
 from django.contrib.auth import login as auth_login 
 from django.contrib.auth import logout as auth_logout
-from blog.forms import LoginForm, SigninForm
+from blog.forms import LoginForm, PostForm, SigninForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required
 from blog.models import Post
@@ -113,6 +113,12 @@ def relevants(request):
 
 @login_required(login_url="/login")
 def create_post(request):
+    if request.method == "GET":
+        form = PostForm()
+        return render(request, "create_post.html", {"form" : form })
+
+    elif request.method == "POST":
+        form = PostForm(request.POST)    
     
     return render(request, "create_post.html")
 

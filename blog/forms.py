@@ -12,4 +12,4 @@ class LoginForm(forms.Form):
     
 class PostForm(forms.Form):
     title = forms.CharField(required=True, label="Type your post title")
-    content = forms.CharField(required=True, label="Type the content of your post")
+    content = forms.CharField(required=True, label="Type the content of your post", widget=forms.Textarea(attrs={"rows":25}))

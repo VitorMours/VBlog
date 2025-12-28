@@ -1,9 +1,28 @@
 {% extends 'partials/base.html' %}
+{% load widget_tweaks %}
 
 {% block title %} - Create Post{% endblock %}
 
 {% block content %}
+<main class="bg-stone-100 h-screen w-full">
+    <div class="flex container pt-10 sm:mx-auto p-5 gap-6 w-full">
+        
+        <div id="textarea-editor" class="flex-1">
+            <h2 class="text-xl font-bold py-5">Editor</h2>
+            <form class="flex flex-col space-y-6" method="post">
+                {% csrf_token %}
 
-
-
+                {% for field in form %}
+                    <div class="form-group">
+                        {{ field.label_tag }}
+                        {{ field|add_class:" font-bold shadow-sm p-3 mt-3 w-full border rounded-md border-stone-300 bg-white" }}
+                    </div>
+                {% endfor %}
+            </form>
+        </div>
+        <div id="textarea-preview" class="flex-1">
+            <h2 class="text-xl font-bold py-5">Preview</h2>
+        </div>
+    </div>
+</main>
 {% endblock %}
