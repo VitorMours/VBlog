@@ -115,10 +115,20 @@ def relevants(request):
 def create_post(request):
     if request.method == "GET":
         form = PostForm()
-        return render(request, "create_post.html", {"form" : form })
+        return render(request, "create_post.html", { "form" : form })
 
     elif request.method == "POST":
-        form = PostForm(request.POST)    
+        form = PostForm(request.POST) 
+        if form.is_valid():
+            new_post = Post(
+                title=form.cleaned_data["title"],
+                content=form.cleaned_data["content"],
+                owner = request.user
+            )            
+            new_post.save()
+            
+            return redirect("dashboard")
+        return render(request, "create_post.html", { "form": form })        
     
     return render(request, "create_post.html")
 
