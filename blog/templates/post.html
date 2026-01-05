@@ -1,0 +1,33 @@
+{% extends "partials/base.html" %}
+
+{% block content %}
+<main class="container mx-auto p-10">
+    <article class="bg-white p-8 shadow-md rounded-lg">
+        <h1 class="text-4xl font-bold mb-4">{{ post.title }}</h1>
+        
+        <div class="text-gray-500 mb-6">
+            <span>Por: {{ post.owner.first_name }}</span> | 
+            <span>Em: {{ post.created_at|date:"d/m/Y H:i" }}</span>
+        </div>
+
+        <div id="content" class="prose max-w-none min-h-[200px]">
+            {{ post.content_html|safe }}
+        </div>
+        
+        <div class="mt-10">
+            <a href="/recents" class="text-blue-500 hover:underline">← Voltar</a>
+        </div>
+    </article>
+</main>
+
+<!-- Conteúdo renderizado e sanitizado server-side em `post.content_html` -->
+
+<style>
+    /* Caso você não tenha o plugin Typography do Tailwind, estes estilos básicos ajudam: */
+    #content h1 { font-size: 2rem; font-weight: bold; margin-bottom: 1rem; }
+    #content h2 { font-size: 1.5rem; font-weight: bold; margin-top: 1rem; }
+    #content ul { list-style-type: disc; margin-left: 1.5rem; }
+    #content p { margin-bottom: 1rem; }
+    #content code { background-color: #f3f4f6; padding: 2px 4px; border-radius: 4px; }
+</style>
+{% endblock %}

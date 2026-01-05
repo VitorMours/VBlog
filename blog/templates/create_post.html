@@ -53,7 +53,7 @@
             ready(function(){
                 // set marked options for consistent list handling
                 if(window.marked && marked.setOptions){
-                    marked.setOptions({ gfm: true, smartLists: true });
+                    marked.setOptions({ gfm: true, smartLists: true, breaks: false });
                 }
                 // Try to find the textarea for the post content. Django usually renders id 'id_content', but select by name for robustness.
                 var editor = document.querySelector('textarea[name="content"]') || document.getElementById('id_content');
@@ -62,14 +62,30 @@
 
                 function updatePreview(){
                     var md = editor.value || '';
+                    // remove common leading indentation (similar to Python's textwrap.dedent)
+                    function dedent(s){
+                        var lines = s.replace(/\t/g, '    ').split('\n');
+                        // remove leading/trailing empty lines
+                        while(lines.length && lines[0].trim()==='') lines.shift();
+                        while(lines.length && lines[lines.length-1].trim()==='') lines.pop();
+                        var minIndent = Infinity;
+                        for(var i=0;i<lines.length;i++){
+                            var line = lines[i];
+                            if(line.trim()==='') continue;
+                            var m = line.match(/^\s*/);
+                            if(m){
+                                minIndent = Math.min(minIndent, m[0].length);
+                            }
+                        }
+                        if(!isFinite(minIndent) || minIndent===0) return lines.join('\n');
+                        return lines.map(function(l){ return l.slice(minIndent); }).join('\n');
+                    }
+                    md = dedent(md);
                     try{
                         var html = (window.marked && marked.parse) ? marked.parse(md) : md.replace(/\n/g, '<br>');
                     }catch(e){
                         var html = '';
                     }
-                    // debug logs to inspect produced HTML when something looks wrong
-                    console.log('marked html:', html);
-                    try{ console.log('sanitized html:', DOMPurify.sanitize(html)); }catch(e){}
                     // sanitize the generated HTML before inserting
                     previewBody.innerHTML = DOMPurify.sanitize(html);
                 }

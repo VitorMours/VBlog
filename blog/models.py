@@ -2,6 +2,15 @@ from django.db import models
 import __future__
 from django.contrib.auth.models import User, AbstractUser, BaseUserManager
 import uuid
+import textwrap
+
+# render markdown to html safely
+try:
+    import markdown as _markdown
+    import bleach as _bleach
+except Exception:
+    _markdown = None
+    _bleach = None
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, password, **extra_fields) -> "CustomUser": # type: ignore
@@ -80,6 +89,44 @@ class Post(models.Model):
         if not isinstance(value, str):
             raise TypeError("O valor passado deve ser do tipo primitivo string")
         self._content = value
+
+    @property
+    def content_html(self) -> str:
+        """Renderiza o Markdown do `content` para HTML sanitizado.
+
+        Usa `markdown` + `bleach` quando disponíveis. Se as libs
+        não estiverem instaladas, retorna o texto cru escapado em <pre>.
+        Também remove indentação acidental com `textwrap.dedent`.
+        """
+        raw = self._content or ''
+        # remove indentation acidental (ex.: copiar/colar)
+        dedented = textwrap.dedent(raw)
+
+        if _markdown and _bleach:
+            # extensões que aproximam GFM e preservam listas/quebras
+            html = _markdown.markdown(dedented, extensions=["extra", "sane_lists", "codehilite"], output_format='html5')
+
+            # permitir tags comuns geradas por markdown
+            allowed_tags = [
+                'a','abbr','acronym','b','blockquote','code','em','i','li','ol','pre','strong','ul',
+                'p','h1','h2','h3','h4','h5','h6','br','hr','img','table','thead','tbody','tr','th','td'
+            ]
+            allowed_attrs = {
+                '*': ['class', 'id'],
+                'a': ['href', 'title', 'rel', 'target'],
+                'img': ['src', 'alt', 'title'],
+                'th': ['colspan', 'rowspan'],
+                'td': ['colspan', 'rowspan']
+            }
+
+            clean = _bleach.clean(html, tags=allowed_tags, attributes=allowed_attrs, strip=True)
+            # permitir links seguros
+            clean = _bleach.linkify(clean)
+            return clean
+
+        # fallback simples: escapar dentro de <pre>
+        import html as _html
+        return f"<pre>{_html.escape(dedented)}</pre>"
 
     @property
     def owner(self) -> CustomUser:

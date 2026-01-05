@@ -1,4 +1,5 @@
-from django.shortcuts import render, redirect
+import uuid
+from django.shortcuts import get_object_or_404, render, redirect
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, get_user_model
 from django.contrib.auth import login as auth_login 
@@ -24,7 +25,7 @@ def about(request):
     
 def login(request):
     if request.user.is_authenticated:
-            return redirect("dashboard")
+            return redirect("relevants")
 
     if request.method == "GET":
         form = LoginForm()
@@ -43,7 +44,7 @@ def login(request):
             user = authenticate(request, email=email, password=password)
             if user is not None:
                 auth_login(request, user)
-                return redirect("dashboard")
+                return redirect("relevants")
             else:
                 messages.error(request, "Email ou senha incorretos. Por favor, tente novamente.")
                 return render(request, 'login.html', { "form" : form }) 
@@ -79,14 +80,7 @@ def signin(request):
         return HttpResponse("You can't use this HTTP method here", status=405)
 
 
-@login_required(login_url="/login")
-def dashboard(request):
 
-    context = {
-        "username":request.user.first_name,
-    }
-
-    return render(request, "dashboard.html", context=context)
 
 @login_required(login_url="/login")
 def recents(request):
@@ -127,9 +121,13 @@ def create_post(request):
             )            
             new_post.save()
             
-            return redirect("dashboard")
+            return redirect("relevants")
         return render(request, "create_post.html", { "form": form })        
     
     return render(request, "create_post.html")
 
 
+@login_required(login_url="/login")
+def view_post(request, id: uuid):
+    post = get_object_or_404(Post, pk=id)
+    return render(request, "post.html", { "post" : post })
