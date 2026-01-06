@@ -29,8 +29,6 @@ def login(request):
 
     if request.method == "GET":
         form = LoginForm()
-        MessageService.create_message(request, "Login errado", MessageImportanceLevel.DEBUG)
-        MessageService.create_message(request, "Login errado", MessageImportanceLevel.INFO)
         return render(request, 'login.html', { "form" : form })
 
     elif request.method == "POST":
