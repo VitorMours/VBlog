@@ -24,76 +24,49 @@
             </form>
         </div>
         
-        <div id="textarea-preview" class="flex-1 md:basis-1/2 min-w-0">
+        <div id="textarea-preview" class="flex-1 md:basis-1/2 overflow-y-auto">
             <h2 class="text-xl font-bold py-5">Preview</h2>
             <div id="preview-body" 
-                 class="prose max-w-full p-4 bg-white border rounded-md border-stone-300 overflow-x-auto overflow-y-auto break-words whitespace-pre-wrap w-full" 
-                 style="min-height:400px; word-break: break-word;">
+                 class="max-w-full p-4 bg-white border rounded-md border-stone-300 overflow-x-auto overflow-y-auto break-words  w-full" 
+                 style="height:80vh; word-break: break-word;">
+                 <div id="preview-header" class="text-2xl font-bold p-3 pl-0"></div>
+                <hr class="border-stone-300 my-6 mt-3"></hr>
+                 <div id="preview-content" class="overflow-y-auto"></div>
             </div>
         </div>
-
     </div>
 </main>
     <!-- DOMPurify (sanitize) via CDN; marked is already included in base.html -->
     <script src="https://cdn.jsdelivr.net/npm/dompurify@2.4.0/dist/purify.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
-    <style>
-        /* Ensure bullets/numbers show in the preview even if global CSS overrides lists */
-        #preview-body ul { list-style: disc; margin-left: 1.25rem; }
-        #preview-body ol { list-style: decimal; margin-left: 1.25rem; }
-        #preview-body pre { white-space: pre-wrap; }
-    </style>
     <script>
-        (function(){
-            function ready(fn){
-                if(document.readyState!='loading') fn(); else document.addEventListener('DOMContentLoaded', fn);
-            }
+    const contentInput = document.getElementById("id_content");
+    const titleInput = document.getElementById("id_title");
+    
+    const previewContent = document.getElementById("preview-content");
+    const previewHeader = document.getElementById("preview-header");
 
-            ready(function(){
-                // set marked options for consistent list handling
-                if(window.marked && marked.setOptions){
-                    marked.setOptions({ gfm: true, smartLists: true, breaks: false });
-                }
-                // Try to find the textarea for the post content. Django usually renders id 'id_content', but select by name for robustness.
-                var editor = document.querySelector('textarea[name="content"]') || document.getElementById('id_content');
-                var previewBody = document.getElementById('preview-body');
-                if(!editor || !previewBody) return;
+    function updateContentPreview(){
+        const rawContent = contentInput.value;
+        const dirtyHtml = marked.parse(rawContent); // , {breaks: true}
+        previewContent.innerHTML = DOMPurify.sanitize(dirtyHtml);
+    }
 
-                function updatePreview(){
-                    var md = editor.value || '';
-                    // remove common leading indentation (similar to Python's textwrap.dedent)
-                    function dedent(s){
-                        var lines = s.replace(/\t/g, '    ').split('\n');
-                        // remove leading/trailing empty lines
-                        while(lines.length && lines[0].trim()==='') lines.shift();
-                        while(lines.length && lines[lines.length-1].trim()==='') lines.pop();
-                        var minIndent = Infinity;
-                        for(var i=0;i<lines.length;i++){
-                            var line = lines[i];
-                            if(line.trim()==='') continue;
-                            var m = line.match(/^\s*/);
-                            if(m){
-                                minIndent = Math.min(minIndent, m[0].length);
-                            }
-                        }
-                        if(!isFinite(minIndent) || minIndent===0) return lines.join('\n');
-                        return lines.map(function(l){ return l.slice(minIndent); }).join('\n');
-                    }
-                    md = dedent(md);
-                    try{
-                        var html = (window.marked && marked.parse) ? marked.parse(md) : md.replace(/\n/g, '<br>');
-                    }catch(e){
-                        var html = '';
-                    }
-                    // sanitize the generated HTML before inserting
-                    previewBody.innerHTML = DOMPurify.sanitize(html);
-                }
+    function updateTitlePreview(){
+        const rawTitle = titleInput.value;
+        // Se você não quer que o título aceite Markdown (apenas texto), 
+        // use previewHeader.textContent = rawTitle;
+        const dirtyHtml = marked.parse(rawTitle, {breaks: true}); 
+        previewHeader.innerHTML = DOMPurify.sanitize(dirtyHtml);
+    }
 
-                editor.addEventListener('input', updatePreview);
-                // initial render
-                updatePreview();
-            });
-        })();
-    </script>
+    contentInput.addEventListener("input", updateContentPreview);
+    titleInput.addEventListener("input", updateTitlePreview);
+
+    window.addEventListener('DOMContentLoaded', () => {
+        updateContentPreview();
+        updateTitlePreview();
+    });
+        </script>
 {% endblock %}

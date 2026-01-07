@@ -1,7 +1,7 @@
 {% extends "partials/base.html" %}
 
 {% block content %}
-<main class="container mx-auto p-10">
+<main class="bg-stone-100 min-h-screen"><div class="container mx-auto p-10 ">
     <article class="bg-white p-8 shadow-md rounded-lg">
         <h1 class="text-4xl font-bold mb-4">{{ post.title }}</h1>
         
@@ -18,6 +18,7 @@
             <a href="/recents" class="text-blue-500 hover:underline">← Voltar</a>
         </div>
     </article>
+</div>
 </main>
 
 <!-- Conteúdo renderizado e sanitizado server-side em `post.content_html` -->

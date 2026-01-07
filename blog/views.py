@@ -72,7 +72,7 @@ def signin(request):
             new_user.set_password(form.cleaned_data["password"])
             new_user.save()
             auth_login(request, new_user)
-            return redirect("dashboard")
+            return redirect("relevants")
         return render(request, "signin.html", { "form" : form })
     else:
         return HttpResponse("You can't use this HTTP method here", status=405)

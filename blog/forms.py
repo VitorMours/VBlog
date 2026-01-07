@@ -11,5 +11,5 @@ class LoginForm(forms.Form):
     password = forms.CharField(required=True, widget=forms.PasswordInput(), label="Password")
     
 class PostForm(forms.Form):
-    title = forms.CharField(required=True, label="Type your post title")
-    content = forms.CharField(required=True, label="Type the content of your post", widget=forms.Textarea(attrs={"rows":25}))
+    title = forms.CharField(required=True, label="Type your post title", widget=forms.TextInput(attrs={"placeholder":" The title of your post..."}))
+    content = forms.CharField(required=True, label="Type the content of your post", widget=forms.Textarea(attrs={"rows":20,"placeholder":"Your post content..",}))

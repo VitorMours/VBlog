@@ -44,7 +44,10 @@ class TestAuthService(TestCase):
         module = importlib.import_module("blog.services.auth_service")
         class_ = module.AuthService 
         self.assertTrue(hasattr(class_, "deactivate_user"))
-        
+       
+    
+       
+     
         
         
         
