@@ -23,6 +23,7 @@ class CustomUserManager(BaseUserManager):
         user = self.model(email=email, password=password, **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
+        return user
 
     def create_superuser(self, email, password, **extra_fields) -> "CustomUser": # type: ignore
         if not email or not password:
