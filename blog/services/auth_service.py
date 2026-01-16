@@ -20,6 +20,6 @@ class AuthService:
         pass
     
     @staticmethod 
-    def deactivate_user() -> None:
+    def deactivate_user(user: User) -> None:
         pass
     
