@@ -23,4 +23,11 @@ class TestEmailService(TestCase):
             raise ImportError("Was not possible to import the email service")
         
     def test_if_email_service_have_configurations_variables(self) -> None:
+        pass 
+
+    def test_class_send_method(self) -> None:
+        module = importlib.import_module("blog.services.email_service")
+        class_ = module.EmailService
+        assert hasattr(class_, "send")
         
+
