@@ -20,6 +20,10 @@ class AuthService:
         pass
     
     @staticmethod 
-    def deactivate_user() -> None:
-        pass
+    def deactivate_user(user: User) -> None:
+        if user.is_active:
+            user.is_active = False
+        else:
+            pass
+    
     
