@@ -1,7 +1,6 @@
 from django.contrib.auth import get_user_model, authenticate
 from django.contrib.auth import login as auth_login 
 from django.contrib.auth import logout as auth_logout
-
 User = get_user_model()
 
 class AuthService:

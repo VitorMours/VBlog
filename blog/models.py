@@ -166,3 +166,12 @@ class Post(models.Model):
     def __str__(self) -> None:
         return f"{self.title} {self.owner}: {self.visibility}"
 
+class RankingVotes(models.Model):
+    _id = models.UUIDField(primary_key=True, null=False, blank=False, default=uuid.uuid4, editable=False)
+    origin_post = models.ForeignKey(Post, null=False, blank=False, on_delete=models.CASCADE)
+    user_id= models.ForeignKey(CustomUser, null=False, blank=False, on_delete=models.CASCADE)
+    vote_value = models.BooleanField(null=False, blank=False)
+    created_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    

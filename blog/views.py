@@ -69,8 +69,6 @@ def signin(request):
                 messages.info(request, "Ja existe um usuario com esse login")
                 return redirect("signin")
 
-            print(result)
-
             new_user = User(
                 first_name = form.cleaned_data["first_name"],
                 last_name = form.cleaned_data["last_name"],
@@ -84,9 +82,6 @@ def signin(request):
     else:
         return HttpResponse("You can't use this HTTP method here", status=405)
 
-
-
-
 @login_required(login_url="/login")
 def recents(request):
     if request.method != "GET":
@@ -96,7 +91,6 @@ def recents(request):
     context = { "posts": posts }
 
     return render(request, "recents.html", context=context)
-
 
 @login_required(login_url="/login")
 def relevants(request): 
@@ -108,7 +102,6 @@ def relevants(request):
     context = { "posts": posts }
 
     return render(request, "relevants.html", context=context)
-
 
 @login_required(login_url="/login")
 def create_post(request):
@@ -131,8 +124,13 @@ def create_post(request):
     
     return render(request, "create_post.html")
 
-
 @login_required(login_url="/login")
 def view_post(request, id: uuid):
     post = get_object_or_404(Post, pk=id)
     return render(request, "post.html", { "post" : post })
+
+
+
+@login_required(login_url="/login")
+def profile(request, id: uuid):
+    pass
