@@ -13,3 +13,5 @@ class EmailService:
     Abstraction of the send mail method from the django core framework part.
     """
     pass
+
+    
