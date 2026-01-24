@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path
-from .views import create_post, index, about, login, recents, relevants, signin, logout, view_post
+from .views import create_post, index, about, login, profile, recents, relevants, signin, logout, view_post
 
 urlpatterns = [
     path('', index, name="index"),
@@ -12,4 +12,5 @@ urlpatterns = [
     path('relevants', relevants, name="relevants"),
     path('create_post', create_post, name="create_post"),
     path('post/<uuid:id>', view_post, name="view_post"),
+    path('profile/', profile, name="profile"),
 ]

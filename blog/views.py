@@ -132,5 +132,7 @@ def view_post(request, id: uuid):
 
 
 @login_required(login_url="/login")
-def profile(request, id: uuid):
-    pass
+def profile(request):
+    user = request.user 
+    print(user)
+    return render(request, "profile.html")
