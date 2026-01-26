@@ -5,12 +5,12 @@ from django.contrib.auth import authenticate, get_user_model
 from django.contrib.auth import login as auth_login 
 from django.contrib.auth import logout as auth_logout
 from blog.forms import LoginForm, PostForm, SigninForm
-from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required
 from blog.models import Post
+from django.contrib import messages
 from blog.services.message_service import MessageService
 from blog.services.message_service import MessageImportanceLevel
-
+from blog.services.auth_service import AuthService
 User = get_user_model()
 
 def index(request):
@@ -34,11 +34,10 @@ def login(request):
     elif request.method == "POST":
         form = LoginForm(request.POST)
         
-        
         if form.is_valid():
             email = form.cleaned_data["email"]
             password = form.cleaned_data["password"]
-
+         
             user = authenticate(request, email=email, password=password)
             if user is not None:
                 auth_login(request, user)
@@ -64,6 +63,12 @@ def signin(request):
     elif request.method == "POST":
         form = SigninForm(request.POST)
         if form.is_valid():
+            email = form.cleaned_data["email"]
+            
+            if result := AuthService.check_if_email_is_registered(email):
+                messages.info(request, "Ja existe um usuario com esse login")
+                return redirect("signin")
+
             new_user = User(
                 first_name = form.cleaned_data["first_name"],
                 last_name = form.cleaned_data["last_name"],
@@ -77,9 +82,6 @@ def signin(request):
     else:
         return HttpResponse("You can't use this HTTP method here", status=405)
 
-
-
-
 @login_required(login_url="/login")
 def recents(request):
     if request.method != "GET":
@@ -89,7 +91,6 @@ def recents(request):
     context = { "posts": posts }
 
     return render(request, "recents.html", context=context)
-
 
 @login_required(login_url="/login")
 def relevants(request): 
@@ -101,7 +102,6 @@ def relevants(request):
     context = { "posts": posts }
 
     return render(request, "relevants.html", context=context)
-
 
 @login_required(login_url="/login")
 def create_post(request):
@@ -124,8 +124,15 @@ def create_post(request):
     
     return render(request, "create_post.html")
 
-
 @login_required(login_url="/login")
 def view_post(request, id: uuid):
     post = get_object_or_404(Post, pk=id)
     return render(request, "post.html", { "post" : post })
+
+
+
+@login_required(login_url="/login")
+def profile(request):
+    user = request.user 
+    print(user)
+    return render(request, "profile.html")

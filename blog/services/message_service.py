@@ -25,6 +25,6 @@ class MessageService:
         """
         Method focused in to send the message for the user, and to provide some 
         type of visual feedback to the user about the actionthat it's done. This 
-        function actually craete the message and 
+        function actually create the message and 
         """
         messages.add_message(request, level.value, message)

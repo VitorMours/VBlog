@@ -94,6 +94,7 @@ class TestAuthService(TestCase):
         result = class_.check_if_account_is_active(self.user.email)
         self.assertTrue(result)
         
+        
     def test_if_deactivate_user_method_is_static(self) -> None:
         module = importlib.import_module("blog.services.auth_service")
         class_ = module.AuthService 
@@ -106,3 +107,9 @@ class TestAuthService(TestCase):
         method = inspect.signature(class_.deactivate_user)
         parameters = list(method.parameters.keys())
         self.assertEqual(parameters, ["user"])
+
+    def test_if_can_login_user_with_auth_service(self) -> None:
+        module = importlib.import_module("blog.services.auth_service")
+        class_ = module.AuthService 
+        
+

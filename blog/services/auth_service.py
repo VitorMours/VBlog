@@ -1,4 +1,6 @@
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, authenticate
+from django.contrib.auth import login as auth_login 
+from django.contrib.auth import logout as auth_logout
 User = get_user_model()
 
 class AuthService:
@@ -21,5 +23,11 @@ class AuthService:
     
     @staticmethod 
     def deactivate_user(user: User) -> None:
-        pass
+        if user.is_active:
+            user.is_active = False
+        else:
+            pass
+    
+
+    
     
