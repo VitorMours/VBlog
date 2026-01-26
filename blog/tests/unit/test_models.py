@@ -146,8 +146,26 @@ class TestVotesModel(TestCase):
 class TestVisualizationModel(TestCase):
     def setUp(self) -> None:
         pass
+    
     def test_if_can_import_visualization_model_from_file(self) -> None:
         try:
             from blog.models import Visualization
         except ImportError:
             raise ImportError("Was not possible to import the visualization model")
+        
+    def test_if_visualization_model_have_correct_super_class(self) -> None:
+        module = importlib.import_module("blog.models")
+        class_ = module.Visualization
+        self.assertTrue(issubclass(class_, models.Model))
+    
+    def test_if_visualization_have_correct_fields(self) -> None:
+        module = importlib.import_module("blog.models")
+        class_ = module.Visualization 
+        self.assertTrue(hasattr(class_, "user_id"))
+        self.assertTrue(hasattr(class_, "id"))
+        self.assertTrue(hasattr(class_, "post_id"))
+        self.assertTrue(hasattr(class_, "created_at"))
+        self.assertTrue(hasattr(class_, "updated_at"))
+    
+    
+    

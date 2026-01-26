@@ -171,10 +171,17 @@ class Votes(models.Model):
     origin_post = models.ForeignKey(Post, null=False, blank=False, on_delete=models.CASCADE)
     user_id= models.ForeignKey(CustomUser, null=False, blank=False, on_delete=models.CASCADE)
     vote_value = models.BooleanField(null=False, blank=False)
-    created_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
     
+    def __str__(self) -> str:
+        return f"{self.origin_post}: {self.vote_value}"
     
 class Visualization(models.Model):
-    pass
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, blank=False, null=False, editable=False)
+    user_id = models.ForeignKey(CustomUser, null=False, blank=False, on_delete=models.CASCADE)
+    post_id = models.ForeignKey(Post, null=False, blank=False, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
