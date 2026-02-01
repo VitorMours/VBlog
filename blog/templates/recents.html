@@ -1,12 +1,12 @@
 {% extends "partials/base.html" %} {% block title %} - Recents {% endblock title %} 
 
 {% block content %}
-<main class="bg-stone-100 w-full h-screen">
+<main class="bg-stone-100 w-full ">
   <div class="container pt-10 sm:mx-auto p-5">
     <h2 class="text-xl font-bold pb-5">Posts Recentes</h2>
 
     {% if posts %}
-    <div class="list-group">
+    <div class="list-group overflow-y-auto">
       {% for post in posts %}
       <a href="{% url 'view_post' post.id %}" class="list-group-item list-group-item-action mb-3 block">
         <div class="bg-white border border-gray-200 p-5 flex w-full justify-between hover:bg-gray-100 transition duration-300 ease-in-out mb-3 shadow-sm rounded">

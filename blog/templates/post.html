@@ -10,7 +10,7 @@
             <span>Em: {{ post.created_at|date:"d/m/Y H:i" }}</span>
         </div>
 
-        <div id="content" class="prose max-w-none min-h-[200px]">
+        <div class="markdown-content text-gray-800">
             {{ post.content_html|safe }}
         </div>
         

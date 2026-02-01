@@ -42,7 +42,6 @@ class TestCustomUserManagerModel(TestCase):
     def test_if_is_being_called(self) -> None:
         self.assertTrue(True)
 
-
 class TestPostModel(TestCase):
     def setUp(self) -> None:
         mock_user = User(first_name="vitor moura",email="vitormoura@gmail.com",password="password")
@@ -120,7 +119,6 @@ class TestPostModel(TestCase):
         class_ = module.Post
         self.assertEqual(type(class_._meta.get_field("_status")), models.IntegerField)
        
-       
 class TestVotesModel(TestCase):
     def setUp(self) -> None:
         pass 
@@ -141,7 +139,6 @@ class TestVotesModel(TestCase):
         class_ = module.Votes
         correct_fields = ["_id", "origin_post", "vote_value", "created_at", "updated_at"]
         model_fields = [field.name for field in class_._meta.get_fields()]
-        
         
 class TestVisualizationModel(TestCase):
     def setUp(self) -> None:
