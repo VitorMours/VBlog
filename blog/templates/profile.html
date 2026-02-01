@@ -4,14 +4,44 @@
 
 {% block content %}
 {% include "partials/_message.html" %}
-<main class="flex bg-stone-100 w-full h-screen items-center justify-center overflow-hidden">
-  <article class=" container bg-white rounded-md shadow-sm p-8 overflow-hidden">
+<main class="flex flex-col bg-stone-100 w-full h-screen items-center justify-center overflow-y-auto">
+  <h1 class="container items-start pb-5 font-bold  text-2xl">Bem vindo {{ user_name }}</h1>
+  <article class=" container bg-white h-7/10 rounded-md shadow-sm p-8 overflow-hidden">
     <section>
-      Bem vindo Fulano de tal
-    </section>
-    <section>
-      <canvas></canvas>
+      <canvas id="myChart"></canvas>
     </section>
   </article>
 <main>
+{% endblock %}
+
+{% block javascript %}
+<script>
+  const ctx = document.getElementById('myChart');
+  
+  // Dados do Django (você precisa passar do context)
+  const chartData = {{ chart_data|safe|default:"[12, 19, 3, 5, 2, 3]" }};
+  const chartLabels = {{ chart_labels|safe|default:"['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun']" }};
+  
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: chartLabels,
+      datasets: [{
+        label: 'Posts por dia',
+        data: chartData,
+        borderColor: 'rgb(59, 130, 246)',
+        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+        borderWidth: 2,
+        fill: true
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        y: { beginAtZero: true }
+      }
+    }
+  });
+</script>
 {% endblock %}

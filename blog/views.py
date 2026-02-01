@@ -6,7 +6,7 @@ from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
 from blog.forms import LoginForm, PostForm, SigninForm
 from django.contrib.auth.decorators import login_required, permission_required
-from blog.models import Post
+from blog.models import Post, CustomUser
 from django.contrib import messages
 from blog.services.message_service import MessageService
 from blog.services.message_service import MessageImportanceLevel
@@ -134,5 +134,7 @@ def view_post(request, id: uuid):
 @login_required(login_url="/login")
 def profile(request):
     user = request.user 
-    print(user)
-    return render(request, "profile.html")
+    user = CustomUser.objects.filter(email=user).first()
+    print(user) 
+    context = {"user_name": user.first_name }
+    return render(request, "profile.html", context)
