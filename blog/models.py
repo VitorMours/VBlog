@@ -153,8 +153,8 @@ class Votes(models.Model):
     
 class Visualization(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, blank=False, null=False, editable=False)
-    user_id = models.ForeignKey(CustomUser, null=False, blank=False, on_delete=models.CASCADE)
-    post_id = models.ForeignKey(Post, null=False, blank=False, on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, null=False, blank=False, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, null=False, blank=False, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     

@@ -1,11 +1,15 @@
 from django.test import TestCase 
 import importlib 
 import inspect 
-
+from blog.models import CustomUser
 
 class TestVisualationService(TestCase):
   def setUp(self) -> None:
-    pass 
+    self.mock_user = CustomUser.objects.create_user(
+      email="jvrezendemoura@gmail.com",
+      password="123asd!"
+    )
+    
   
   def test_if_can_import_service_module(self) -> None:
     try:
@@ -46,3 +50,18 @@ class TestVisualationService(TestCase):
     self.assertTrue(calculate_user_views_is_static)
     self.assertTrue(calculate_views_per_post_is_static)
     self.assertTrue(calculate_views_per_day_is_static)
+    
+  def test_if_calculate_user_views_method_have_correct_signature(self) -> None:
+    module = importlib.import_module("blog.services.visualization_service")
+    class_ = module.VisualizationService
+    signature = inspect.signature(class_.calculate_user_views)
+    parameters = signature.parameters.keys()
+    for parameter in parameters:
+      self.assertIn(parameter, ["user"])
+      
+  def test_if_calculate_user_views_methods_returns_json(self) -> None:
+    module = importlib.import_module("blog.services.visualization_service")
+    class_ = module.VisualizationService
+    result = class_.calculate_user_views(self.mock_user)
+    self.assertEqual(result, [])
+    
