@@ -144,8 +144,6 @@ class TestVotesModel(TestCase):
         self.assertTrue(hasattr(class_, "created_at"))
         self.assertTrue(hasattr(class_, "updated_at"))
         
-<<<<<<< HEAD
-=======
     def test_if_model_fiels_are_from_correct_type(self) -> None:    
         module = importlib.import_module("blog.models")
         class_ = module.Votes
@@ -156,7 +154,6 @@ class TestVotesModel(TestCase):
         self.assertIsInstance(class_._meta.get_field("created_at"), models.DateTimeField)
         self.assertIsInstance(class_._meta.get_field("updated_at"), models.DateTimeField)
         
->>>>>>> 86c6116 (Creating more test for models)
 class TestVisualizationModel(TestCase):
     def setUp(self) -> None:
         pass
