@@ -137,9 +137,26 @@ class TestVotesModel(TestCase):
     def test_votes_model_have_correct_fields(self) -> None:
         module = importlib.import_module("blog.models")
         class_ = module.Votes
-        correct_fields = ["_id", "origin_post", "vote_value", "created_at", "updated_at"]
-        model_fields = [field.name for field in class_._meta.get_fields()]
+        self.assertTrue(hasattr(class_, "_id"))
+        self.assertTrue(hasattr(class_, "origin_post"))
+        self.assertTrue(hasattr(class_, "user_id"))
+        self.assertTrue(hasattr(class_, "vote_value"))
+        self.assertTrue(hasattr(class_, "created_at"))
+        self.assertTrue(hasattr(class_, "updated_at"))
         
+<<<<<<< HEAD
+=======
+    def test_if_model_fiels_are_from_correct_type(self) -> None:    
+        module = importlib.import_module("blog.models")
+        class_ = module.Votes
+        self.assertIsInstance(class_._meta.get_field("_id"), models.UUIDField)
+        self.assertIsInstance(class_._meta.get_field("origin_post"), models.ForeignKey)
+        self.assertIsInstance(class_._meta.get_field("user_id"), models.ForeignKey)
+        self.assertIsInstance(class_._meta.get_field("vote_value"), models.BooleanField)
+        self.assertIsInstance(class_._meta.get_field("created_at"), models.DateTimeField)
+        self.assertIsInstance(class_._meta.get_field("updated_at"), models.DateTimeField)
+        
+>>>>>>> 86c6116 (Creating more test for models)
 class TestVisualizationModel(TestCase):
     def setUp(self) -> None:
         pass
@@ -163,6 +180,13 @@ class TestVisualizationModel(TestCase):
         self.assertTrue(hasattr(class_, "post_id"))
         self.assertTrue(hasattr(class_, "created_at"))
         self.assertTrue(hasattr(class_, "updated_at"))
-    
-    
-    
+
+    def test_if_visualization_field_are_correct_type(self) -> None:
+        module = importlib.import_module("blog.models")
+        class_ = module.Visualization 
+        self.assertTrue(class_._meta.get_field("id"), models.UUIDField)
+        self.assertTrue(class_._meta.get_field("user_id"), models.ForeignKey)
+        self.assertTrue(class_._meta.get_field("post_id"), models.ForeignKey)
+        self.assertTrue(class_._meta.get_field("created_at"), models.DateTimeField)
+        self.assertTrue(class_._meta.get_field("updated_at"), models.DateTimeField)
+        
