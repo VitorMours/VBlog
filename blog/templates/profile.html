@@ -1,48 +1,114 @@
 {% extends "partials/base.html" %}
-{% block title %} - Profile{% endblock %}
-
+{% block title %} - Dashboard de Performance{% endblock %}
 
 {% block content %}
 {% include "partials/_message.html" %}
-<main class="flex flex-col bg-stone-100 w-full h-screen items-center justify-center overflow-y-auto">
-  <h1 class="container items-start pb-5 font-bold  text-2xl">Bem vindo {{ user_name }}</h1>
-  <article class=" container bg-white h-7/10 rounded-md shadow-sm p-8 overflow-hidden">
-    <h1 class="container items-start pb-5 font-bold  text-2xl">Visualizações Totais: {{ user_views }}</h1>
-    <section>
-      <canvas id="myChart"></canvas>
-    </section>
-  </article>
-<main>
+
+<main class="min-h-screen bg-stone-100 p-4 md:p-8">
+  <div class="max-w-7xl mx-auto">
+    <!-- Header com Stats Rápidas -->
+    <header class="mb-8">
+      <h1 class="text-3xl font-bold text-stone-800">Bem-vindo, {{ user.get_full_name|default:user.username }}</h1>
+      <p class="text-stone-500">Acompanhe o desempenho dos seus posts em tempo real.</p>
+    </header>
+
+    <!-- Cards de Métricas Totais -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
+        <p class="text-sm font-medium text-stone-500 uppercase">Visualizações Totais</p>
+        <h2 class="text-4xl font-black text-blue-600">{{ user_views }}</h2>
+      </div>
+      <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
+        <p class="text-sm font-medium text-stone-500 uppercase">Views Hoje</p>
+        <h2 class="text-4xl font-black text-green-500">{{ views_today|default:"0" }}</h2>
+      </div>
+      <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
+        <p class="text-sm font-medium text-stone-500 uppercase">Média por Post</p>
+        <h2 class="text-4xl font-black text-purple-500">{{ avg_views|default:"0" }}</h2>
+      </div>
+    </div>
+
+    <!-- Seção de Gráficos -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      
+      <!-- Gráfico 1: Progresso Diário (Linha) -->
+      <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
+        <h3 class="text-lg font-bold mb-4 text-stone-700">Crescimento Diário (Últimos 7 dias)</h3>
+        <div class="relative h-64">
+          <canvas id="chartDailyProgress"></canvas>
+        </div>
+      </div>
+
+      <!-- Gráfico 2: Performance por Post (Barras) -->
+      <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
+        <h3 class="text-lg font-bold mb-4 text-stone-700">Views por Post</h3>
+        <div class="relative h-64">
+          <canvas id="chartViewsPerPost"></canvas>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</main>
 {% endblock %}
 
 {% block javascript %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-  const ctx = document.getElementById('myChart');
-  
-  // Dados do Django (você precisa passar do context)
-  const chartData = {{ chart_data|safe|default:"[12, 19, 3, 5, 2, 3]" }};
-  const chartLabels = {{ chart_labels|safe|default:"['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun']" }};
-  
-  new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: chartLabels,
-      datasets: [{
-        label: 'Posts por dia',
-        data: chartData,
-        borderColor: 'rgb(59, 130, 246)',
-        backgroundColor: 'rgba(59, 130, 246, 0.1)',
-        borderWidth: 2,
-        fill: true
-      }]
+  // Configuração comum para os gráficos
+  const commonOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false }
     },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      scales: {
-        y: { beginAtZero: true }
+    scales: {
+      y: { 
+        beginAtZero: true, 
+        grid: { color: '#f3f4f6' },
+        ticks: {
+          precision: 0 // Mostra apenas números inteiros
+        }
+      },
+      x: { 
+        grid: { display: false }
       }
     }
+  };
+
+  // 1. Gráfico de Progresso Diário (Line)
+  const ctxDaily = document.getElementById('chartDailyProgress').getContext('2d');
+  new Chart(ctxDaily, {
+    type: 'line',
+    data: {
+      labels: {{ chart_labels_daily|safe|default:"[]" }},
+      datasets: [{
+        label: 'Views',
+        data: {{ chart_data_daily|safe|default:"[]" }},
+        borderColor: '#3b82f6',
+        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+        borderWidth: 3,
+        fill: true,
+        tension: 0.4 // Deixa a linha curvada/suave
+      }]
+    },
+    options: commonOptions
+  });
+
+  // 2. Gráfico de Views por Post (Bar)
+  const ctxPosts = document.getElementById('chartViewsPerPost').getContext('2d');
+  new Chart(ctxPosts, {
+    type: 'bar',
+    data: {
+      labels: {{ chart_labels_posts|safe|default:"[]" }},
+      datasets: [{
+        label: 'Views por Post',
+        data: {{ chart_data_posts|safe|default:"[]" }},
+        backgroundColor: '#8b5cf6',
+        borderRadius: 8,
+      }]
+    },
+    options: commonOptions
   });
 </script>
 {% endblock %}

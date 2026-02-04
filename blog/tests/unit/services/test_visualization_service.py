@@ -1,11 +1,7 @@
 from django.test import TestCase 
 import importlib 
 import inspect 
-<<<<<<< HEAD
-from blog.models import CustomUser, Visualization, Post
-=======
 from blog.models import CustomUser, Post, Visualization
->>>>>>> fd0d09ce150e67f1cb13732a2356b047fee15c8f
 
 class TestVisualationService(TestCase):
   def setUp(self) -> None:
@@ -86,7 +82,11 @@ class TestVisualationService(TestCase):
     
     result = class_.get_user_views(self.mock_user)
     self.assertIsInstance(*result, Visualization)
-  
-  
     
+  def test_if_calculate_views_per_post_method_works(self) -> None:
+    module = importlib.import_module("blog.services.visualization_service")
+    class_ = module.VisualizationService
+    result = class_.calculate_views_per_post(self.mock_user)
+    # TODO: Need to finish
+
   
