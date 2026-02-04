@@ -1,7 +1,7 @@
 from django.test import TestCase 
 import importlib 
 import inspect 
-from blog.models import CustomUser
+from blog.models import CustomUser, Visualization, Post
 
 class TestVisualationService(TestCase):
   def setUp(self) -> None:
@@ -59,9 +59,28 @@ class TestVisualationService(TestCase):
     for parameter in parameters:
       self.assertIn(parameter, ["user"])
       
-  def test_if_calculate_user_views_methods_returns_json(self) -> None:
+  def test_if_calculate_user_views_methods_returns_empty_json(self) -> None:
     module = importlib.import_module("blog.services.visualization_service")
     class_ = module.VisualizationService
     result = class_.calculate_user_views(self.mock_user)
-    self.assertEqual(result, [])
+    self.assertQuerySetEqual(result, [])
+   
+  def test_if_calculate_user_views_method_return_json(self) -> None:
+    # Adding some Views
+    new_post = Post(
+      "hi",
+      "bye",
+      self.mock_user
+    )
+    new_post.save()
+    new_view = Visualization(self.mock_user, new_post)
+    new_view.save()
+    module = importlib.import_module("blog.services.visualization_service")
+    class_ = module.VisualizationService
+    result = class_.calculate_user_views(self.mock_user)
+    self.assertEqual(list(result), [])
+    s
+    
+    
+    
     

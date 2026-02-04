@@ -10,7 +10,7 @@ class VisualizationService:
 
   @staticmethod 
   def calculate_user_views(user: User) -> None:
-    visualizations = Visualization.objects.filter(user_id=user)
+    visualizations = Visualization.objects.filter(user_id=user).all()
     print(visualizations)
   
   @staticmethod 
