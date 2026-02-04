@@ -6,8 +6,9 @@ from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
 from blog.forms import LoginForm, PostForm, SigninForm
 from django.contrib.auth.decorators import login_required, permission_required
-from blog.models import Post, CustomUser
+from blog.models import Post, CustomUser, Visualization
 from django.contrib import messages
+from blog.services.visualization_service import VisualizationService
 from blog.services.message_service import MessageService
 from blog.services.message_service import MessageImportanceLevel
 from blog.services.auth_service import AuthService
@@ -127,6 +128,14 @@ def create_post(request):
 @login_required(login_url="/login")
 def view_post(request, id: uuid):
     post = get_object_or_404(Post, pk=id)
+    
+    new_view = Visualization(
+        user = request.user,
+        post = post
+    )
+    
+    new_view.save()
+    
     return render(request, "post.html", { "post" : post })
 
 
@@ -135,6 +144,7 @@ def view_post(request, id: uuid):
 def profile(request):
     user = request.user 
     user = CustomUser.objects.filter(email=user).first()
-    print(user) 
-    context = {"user_name": user.first_name }
+    user_views = VisualizationService.get_user_views(user)
+
+    context = {"user_name": user.first_name, "user_views": user_views }
     return render(request, "profile.html", context)
