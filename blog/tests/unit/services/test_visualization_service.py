@@ -83,6 +83,6 @@ class TestVisualationService(TestCase):
     result = class_.get_user_views(self.mock_user)
     self.assertIsInstance(*result, Visualization)
   
-  
+    
     
   
