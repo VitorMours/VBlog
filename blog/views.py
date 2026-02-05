@@ -146,58 +146,20 @@ def profile(request):
     user = request.user 
     user_views = VisualizationService.count_user_views(user)
     avg_views = VisualizationService.calculate_views_per_post_avg(user)
+    post_views = VisualizationService.calculate_views_per_post(user)
     views_today = VisualizationService.count_views_today(user)
     views_per_day = VisualizationService.calculate_views_per_day(user, days=7)
     
-    chart_labels_daily = []
-    chart_data_daily = []
-    
-    for item in views_per_day:
-        date_str = item['date']
-        if isinstance(date_str, str):
-            if 'T' in date_str:
-                date_obj = timezone.datetime.fromisoformat(date_str.replace('Z', '+00:00'))
-                formatted_date = date_obj.strftime('%d/%m')
-            else:
-                formatted_date = date_str
-        else:
-            formatted_date = date_str.strftime('%d/%m')
-        
-        chart_labels_daily.append(formatted_date)
-        chart_data_daily.append(item['total_views'])
-    
-    if not chart_labels_daily:
-        chart_labels_daily = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab', 'Dom']
-        chart_data_daily = [0, 0, 0, 0, 0, 0, 0]
-    
-    views_per_post_data = VisualizationService.calculate_views_per_post(user)
-    
-    chart_labels_posts = []
-    chart_data_posts = []
-    
-    for item in views_per_post_data[:10]:
-        post_title = item.get("", 'Post Sem Título')
-        if post_title and len(post_title) > 20:
-            display_title = post_title[:20] + '...'
-        else:
-            display_title = post_title or 'Post'
-        
-        chart_labels_posts.append(display_title)
-        chart_data_posts.append(item['total_views'])
-    
-    if not chart_labels_posts:
-        chart_labels_posts = ['Sem dados disponíveis']
-        chart_data_posts = [0]
+    titles = [item["post___title"] for item in post_views]
+    views = [item["total_views"] for item in post_views]
     
     context = {
         "user_name": user.get_full_name() or user.first_name or user.username,
         "user_views": user_views,
         "avg_views": avg_views,
+        "titles":titles,
+        "views":views,
         "views_today": views_today,
-        "chart_labels_daily": chart_labels_daily,
-        "chart_data_daily": chart_data_daily,
-        "chart_labels_posts": chart_labels_posts,
-        "chart_data_posts": chart_data_posts,
         "user": user,  # Passar o objeto user completo para o template
     }
     

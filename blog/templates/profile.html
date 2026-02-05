@@ -70,8 +70,21 @@
           precision: 0 // Mostra apenas números inteiros
         }
       },
-      x: { 
-        grid: { display: false }
+      x: {
+        offset: true,
+        grid: { display: false },
+        ticks: {
+          callback: function(value) {
+            let label = this.getLabelForValue(value);
+
+            // Abrevia se tiver mais de 10 caracteres
+            if (label.length > 10) {
+              return label.substring(0, 10) + "...";
+            }
+
+            return label;
+          }
+        }
       }
     }
   };
@@ -100,10 +113,10 @@
   new Chart(ctxPosts, {
     type: 'bar',
     data: {
-      labels: {{ chart_labels_posts|safe|default:"[]" }},
+      labels: {{ titles|safe|default:"[]" }},
       datasets: [{
         label: 'Views por Post',
-        data: {{ chart_data_posts|safe|default:"[]" }},
+        data: {{ views|safe|default:"[]" }},
         backgroundColor: '#8b5cf6',
         borderRadius: 8,
       }]

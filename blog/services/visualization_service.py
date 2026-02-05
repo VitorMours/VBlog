@@ -3,7 +3,7 @@ from django.utils import timezone
 from datetime import timedelta
 from django.contrib.auth import get_user_model
 from blog.models import Visualization, Post
-from django.db.models import Count
+from django.db.models import Count, Avg
 User = get_user_model()
 
 class VisualizationService:
@@ -15,15 +15,15 @@ class VisualizationService:
   
   @staticmethod 
   def count_user_views(user: User) -> Visualization: #type: ignore
-    visualizations = Visualization.objects.filter(user_id=user).count()
+    visualizations = Visualization.objects.filter(post___owner=user).count()
     return visualizations
   
   @staticmethod 
   def calculate_views_per_post(user: User) -> None  : #type: ignore
     visualizations_per_post = (
     Visualization.objects
-      .filter(user_id=user)
-      .values("post_id")  
+      .filter(post___owner=user)
+      .values("post___title")  
       .annotate(total_views=Count('id'))
     )
     return visualizations_per_post
@@ -33,23 +33,20 @@ class VisualizationService:
       """
       Calcula a média de visualizações por post de um usuário
       """
-      user_posts = Post.objects.filter(_owner=user).count()
-      
-      if user_posts == 0:
-          return 0.0
-      
-      user_post_ids = Post.objects.filter(_owner=user).values_list('id', flat=True)
-      total_views = Visualization.objects.filter(post_id__in=user_post_ids).count()
-      avg_views = total_views / user_posts
-      
+      avg_views = (
+          Post.objects
+          .filter(_owner=user)
+          .annotate(total_views=Count("visualization"))
+          .aggregate(avg=Avg("total_views"))
+      )["avg"]
       return avg_views
-    
+      
   @staticmethod
   def count_views_today(user: User) -> int:
     """Conta visualizações do dia atual"""
     today = timezone.now().date()
     return Visualization.objects.filter(
-      user=user,
+      post___owner=user,
       created_at__date=today
     ).count()
 

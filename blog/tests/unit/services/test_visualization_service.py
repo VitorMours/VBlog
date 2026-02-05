@@ -87,6 +87,6 @@ class TestVisualationService(TestCase):
     module = importlib.import_module("blog.services.visualization_service")
     class_ = module.VisualizationService
     result = class_.calculate_views_per_post(self.mock_user)
-    # TODO: Need to finish
+    # TODO: Need to finis
 
-  
+
