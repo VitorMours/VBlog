@@ -1,0 +1,32 @@
+services:
+  # Serviço da aplicação Django
+  web:
+    build: .
+    volumes:
+      - .:/app
+      - static_volume:/app/static
+      - media_volume:/app/media
+    expose:
+      - "8000"
+    env_file:
+      - .env
+
+  # Serviço do Servidor Web Nginx (Proxy Reverso)
+  nginx:
+    image: nginx:stable-alpine
+    restart: always
+    volumes:
+      # Conecta a configuração que criamos na pasta nginx/
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+      # Partilha as pastas de ficheiros estáticos entre os containers
+      - static_volume:/app/static
+      - media_volume:/app/media
+    ports:
+      - "80:80"
+    depends_on:
+      - web
+
+# Volumes persistentes para ficheiros estáticos e uploads
+volumes:
+  static_volume:
+  media_volume:
