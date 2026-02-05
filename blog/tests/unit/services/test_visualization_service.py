@@ -82,6 +82,8 @@ class TestVisualationService(TestCase):
     
     result = class_.get_user_views(self.mock_user)
     self.assertIsInstance(*result, Visualization)
+  
+    
     
   def test_if_calculate_views_per_post_method_works(self) -> None:
     module = importlib.import_module("blog.services.visualization_service")
