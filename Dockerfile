@@ -2,8 +2,8 @@
 FROM python:3.11-slim
 
 # 2. Impede que o Python gere ficheiros .pyc e permite logs em tempo real
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
 
 # 3. Define a pasta de trabalho dentro do container
 WORKDIR /app
@@ -24,7 +24,8 @@ COPY . /app/
 
 # 7. Coleta ficheiros estáticos para o Nginx poder servir depois
 RUN python manage.py collectstatic --noinput
-
+RUN pip install gunicorn
 # 8. Comando para iniciar o servidor Gunicorn
 # Nota: Substitua 'core' pelo nome da pasta onde está o seu ficheiro wsgi.py
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "core.wsgi:application"]
+# CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "project.wsgi:application"]

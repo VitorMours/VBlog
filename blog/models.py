@@ -32,7 +32,7 @@ class CustomUserManager(BaseUserManager):
 
 class CustomUser(AbstractUser):
     objects = CustomUserManager() # type: ignore
-    username = models.CharField(unique=False)
+    username = None
     email = models.EmailField(
         unique=True,
         null=False,
