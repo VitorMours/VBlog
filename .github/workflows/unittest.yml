@@ -7,8 +7,32 @@ on:
     branches: [master, main]
 
 jobs:
-  test: # Renomeado para 'test' para fazer mais sentido
+  test:
     runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_DATABASE: test_db
+          MYSQL_USER: test_user
+          MYSQL_PASSWORD: test_pass
+          MYSQL_ROOT_PASSWORD: rootpass
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h localhost"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    env:
+      DB_NAME: test_db
+      DB_USER: test_user
+      DB_PASSWORD: test_pass
+      DB_HOST: 127.0.0.1
+      DB_PORT: 3306
+      DJANGO_SETTINGS_MODULE: core.settings
 
     steps:
       - name: Checkout code
@@ -17,11 +41,24 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.12' # Versão estável. Se precisar da 3.13, use '3.13'
+          python-version: "3.12"
 
       - name: Install Dependencies
         run: |
-          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Wait for MySQL to be ready
+        run: |
+          sudo apt-get install -y mysql-client
+          until mysqladmin ping -h"$DB_HOST" --silent; do
+            echo "Waiting for MySQL..."
+            sleep 2
+          done
+
+      - name: Run Migrations
+        run: |
+          python manage.py migrate
 
       - name: Run Tests
         run: |

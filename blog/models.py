@@ -1,6 +1,5 @@
 from django.db import models
-import __future__
-from django.contrib.auth.models import User, AbstractUser, BaseUserManager
+from django.contrib.auth.models import AbstractUser, BaseUserManager
 import uuid
 import markdown
 
@@ -12,7 +11,7 @@ class CustomUserManager(BaseUserManager):
             raise ValueError("The password field must be set")
         
         email = self.normalize_email(email)
-        user = self.model(email=email, password=password, **extra_fields)
+        user = self.model(email=email, **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
         return user
@@ -27,24 +26,31 @@ class CustomUserManager(BaseUserManager):
         extra_fields.setdefault("is_superuser", True)
         extra_fields.setdefault("is_active", True)
 
-        return self.create_user(email=email, password=password, **extra_fields)
+        return self.create_user(
+            email=email,
+            password=password,
+            **extra_fields
+        )
 
 
 class CustomUser(AbstractUser):
-    objects = CustomUserManager() # type: ignore
     username = None
+
     email = models.EmailField(
         unique=True,
         null=False,
         blank=False
     )
 
-    REQUIRED_FIELDS = ["password"]
+    REQUIRED_FIELDS = []
     USERNAME_FIELD = "email"
+    
+    objects = CustomUserManager() # type: ignore
+
 
 class Post(models.Model):
     id = models.UUIDField(primary_key=True, null=False, blank=False, default=uuid.uuid4, editable=False)
-    _title = models.CharField(max_length=100, null=False, blank=False)
+    _title = models.CharField(max_length=255, null=False, blank=False)
     # _url = models.SlugField(unique=True, editable=False)
     _content = models.TextField(null=False, blank=False)
     _visibility = models.BooleanField(default=False, null=False, blank=False)

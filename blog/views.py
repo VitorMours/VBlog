@@ -1,7 +1,8 @@
 from datetime import timezone
 import uuid
+import json
 from django.shortcuts import get_object_or_404, render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.contrib.auth import authenticate, get_user_model
 from django.contrib.auth import login as auth_login 
 from django.contrib.auth import logout as auth_logout
@@ -13,6 +14,8 @@ from blog.services.visualization_service import VisualizationService
 from blog.services.message_service import MessageService
 from blog.services.message_service import MessageImportanceLevel
 from blog.services.auth_service import AuthService
+from blog.services.voting_service import VotingService
+from blog.services.ai.service import GeminiService
 User = get_user_model()
 
 def index(request):
@@ -164,3 +167,65 @@ def profile(request):
     }
     
     return render(request, "profile.html", context)
+
+@login_required(login_url="/login")
+def ai_action(request):
+    if request.method != "POST":
+        return JsonResponse({"error": "Método inválido"}, status=405)
+
+    action = request.POST.get("action")
+    content = request.POST.get("content")
+
+    if not content:
+        return JsonResponse({"error": "Texto vazio"}, status=400)
+
+    if action == "improve":
+        result = GeminiService.improve_post(content)
+        print(result)
+        
+    elif action == "title":
+        result = GeminiService.summarize_post(content)
+        print(result)
+
+    else:
+        return JsonResponse({"error": "Ação inválida"}, status=400)
+
+    return JsonResponse({"result": result})
+
+@login_required(login_url="/login")
+def vote_on_post(request, post_id: uuid):
+    """
+    API endpoint para registrar/atualizar/remover votos em posts.
+    Espera uma requisição POST com JSON contendo 'vote_value' (true para upvote, false para downvote)
+    """
+    if request.method != "POST":
+        return JsonResponse({"success": False, "message": "Método HTTP não permitido"}, status=405)
+    
+    try:
+        post = get_object_or_404(Post, pk=post_id)
+        data = json.loads(request.body)
+        vote_value = data.get("vote_value")
+        
+        if not isinstance(vote_value, bool):
+            return JsonResponse({"success": False, "message": "vote_value deve ser um booleano"}, status=400)
+        
+        success, message = VotingService.add_or_update_vote(post, request.user, vote_value)
+        
+        if success:
+            # Calcular dados atualizados após o voto
+            current_status = post._status
+            user_vote = VotingService.get_user_vote(post, request.user)
+            
+            return JsonResponse({
+                "success": True,
+                "message": message,
+                "status": current_status,
+                "user_vote": user_vote.vote_value if user_vote else None
+            })
+        else:
+            return JsonResponse({"success": False, "message": message}, status=400)
+            
+    except json.JSONDecodeError:
+        return JsonResponse({"success": False, "message": "JSON inválido"}, status=400)
+    except Exception as e:
+        return JsonResponse({"success": False, "message": f"Erro ao processar voto: {str(e)}"}, status=500)

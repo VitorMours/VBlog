@@ -10,6 +10,31 @@
             <span>Em: {{ post.created_at|date:"d/m/Y H:i" }}</span>
         </div>
 
+        <!-- Sistema de Votação -->
+        <div class="flex items-center gap-4 mb-8 p-4 bg-slate-50 rounded-lg border border-gray-200">
+          <button class="voting-btn upvote-btn text-gray-400 hover:text-orange-500 transition-colors focus:outline-none" 
+                  data-post-id="{{ post.id }}" 
+                  data-vote-type="upvote"
+                  title="Votar para cima">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-8 h-8">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+            </svg>
+          </button>
+          
+          <span class="font-bold text-gray-700 text-lg post-status" data-post-id="{{ post.id }}">
+            {{ post.status|default:"0" }}
+          </span>
+          
+          <button class="voting-btn downvote-btn text-gray-400 hover:text-blue-500 transition-colors focus:outline-none" 
+                  data-post-id="{{ post.id }}" 
+                  data-vote-type="downvote"
+                  title="Votar para baixo">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-8 h-8">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+            </svg>
+          </button>
+        </div>
+
         <div class="markdown-content text-gray-800">
             {{ post.content_html|safe }}
         </div>
@@ -31,4 +56,92 @@
     #content p { margin-bottom: 1rem; }
     #content code { background-color: #f3f4f6; padding: 2px 4px; border-radius: 4px; }
 </style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const votingButtons = document.querySelectorAll('.voting-btn');
+
+    votingButtons.forEach(button => {
+      button.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        const postId = this.getAttribute('data-post-id');
+        const voteType = this.getAttribute('data-vote-type');
+        const voteValue = voteType === 'upvote';
+
+        // Mostrar feedback visual
+        this.classList.add('opacity-50');
+
+        // Fazer a requisição AJAX
+        fetch(`/api/vote/${postId}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCSRFToken()
+          },
+          body: JSON.stringify({ vote_value: voteValue })
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            // Atualizar o status do post
+            const statusElement = document.querySelector(`.post-status[data-post-id="${postId}"]`);
+            if (statusElement) {
+              statusElement.textContent = data.status;
+            }
+
+            // Atualizar cores dos botões
+            updateButtonColors(postId, data.user_vote);
+          } else {
+            alert('Erro ao registrar voto: ' + data.message);
+          }
+        })
+        .catch(error => {
+          console.error('Erro:', error);
+          alert('Erro ao registrar voto');
+        })
+        .finally(() => {
+          this.classList.remove('opacity-50');
+        });
+      });
+    });
+  });
+
+  function getCSRFToken() {
+    const name = 'csrftoken';
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+      const cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
+
+  function updateButtonColors(postId, userVote) {
+    const upvoteBtn = document.querySelector(`.upvote-btn[data-post-id="${postId}"]`);
+    const downvoteBtn = document.querySelector(`.downvote-btn[data-post-id="${postId}"]`);
+
+    // Remover cores anteriores
+    upvoteBtn.classList.remove('text-orange-500');
+    downvoteBtn.classList.remove('text-blue-500');
+    upvoteBtn.classList.add('text-gray-400');
+    downvoteBtn.classList.add('text-gray-400');
+
+    // Adicionar cor baseado no voto atual
+    if (userVote === true) {
+      upvoteBtn.classList.remove('text-gray-400');
+      upvoteBtn.classList.add('text-orange-500');
+    } else if (userVote === false) {
+      downvoteBtn.classList.remove('text-gray-400');
+      downvoteBtn.classList.add('text-blue-500');
+    }
+  }
+</script>
 {% endblock %}

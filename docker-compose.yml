@@ -1,17 +1,45 @@
 services:
   # Serviço da aplicação Django
-  web:
+  lillia:
     build: .
-    command: gunicorn --bind 0.0.0.0:8000 project.wsgi:application  # ADICIONE ESTA LINHA
     volumes:
       - .:/app
       - static_volume:/app/static
       - media_volume:/app/media
     expose:
       - "8000"
+    depends_on:
+      - dolphin 
+
+  dolphin:
+    image: mysql:8.0
+    container_name: dolphin_vblog
+    restart: always
+    environment:
+      MYSQL_DATABASE: django_db
+      MYSQL_USER: django_user
+      MYSQL_PASSWORD: django_pass
+      MYSQL_ROOT_PASSWORD: root_pass
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  apollo:
+    image: phpmyadmin/phpmyadmin
+    container_name: apollo_vblog
+    restart: always
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: dolphin
+      PMA_USER: root
+      PMA_PASSWORD: root_pass
+    depends_on:
+      - dolphin
 
   # Serviço do Servidor Web Nginx (Proxy Reverso)
-  nginx:
+  libra:
     image: nginx:stable-alpine
     restart: always
     volumes:
@@ -21,9 +49,10 @@ services:
     ports:
       - "80:80"
     depends_on:
-      - web
+      - lillia
 
 # Volumes persistentes para ficheiros estáticos e uploads
 volumes:
   static_volume:
   media_volume:
+  mysql_data: 

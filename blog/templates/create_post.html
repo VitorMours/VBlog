@@ -4,69 +4,183 @@
 {% block title %} - Create Post{% endblock %}
 
 {% block content %}
-<main class="bg-stone-100 min-h-screen w-full"> <div class="flex flex-col md:flex-row container pt-10 sm:mx-auto p-5 gap-6 w-full max-w-full overflow-hidden">
-        
-        <div id="textarea-editor" class="flex-1 md:basis-1/2 min-w-0">
-            <h2 class="text-xl font-bold py-5">Editor</h2>
-            <form class="flex flex-col space-y-6" method="post">
-                {% csrf_token %}
+<main class="bg-stone-100 min-h-screen w-full">
 
-                {% for field in form %}
-                    <div class="form-group">
-                        {{ field.label_tag }}
-                        {{ field|add_class:"font-bold shadow-sm p-3 mt-3 w-full border rounded-md border-stone-300 bg-white overflow-y-auto" }}
-                    </div>
-                {% endfor %}
-                
-                <button type="submit" class="w-full flex justify-center mt-3 py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-200">
-                    Criar Post
-                </button>
-            </form>
+  <div class="container mx-auto pt-10 px-5">
+
+    <div class="flex flex-col md:flex-row gap-8 w-full">
+
+      <div class="flex-1 min-w-0">
+
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="text-2xl font-bold text-stone-800">
+            Editor
+          
+          </h2>
+
+          
         </div>
-        
-        <div id="textarea-preview" class="flex-1 md:basis-1/2 overflow-y-auto">
-            <h2 class="text-xl font-bold py-5">Preview</h2>
-            <div id="preview-body" 
-                 class="max-w-full p-4 bg-white border rounded-md border-stone-300 overflow-x-auto overflow-y-auto break-words  w-full" 
-                 style="height:80vh; word-break: break-word;">
-                 <div id="preview-header" class="text-2xl font-bold p-3 pl-0"></div>
-                <hr class="border-stone-300 my-6 mt-3"></hr>
-                 <div id="preview-content" class="overflow-y-auto"></div>
+
+        <div class="flex items-center justify-between mb-4">
+
+        <div class="flex gap-3 flex-wrap">
+            <button type="button"
+            onclick="runAI('improve')"
+            class="px-4 py-2 rounded-xl bg-stone-900 text-white text-sm font-medium hover:bg-stone-700 transition">
+            Melhorar texto
+            </button>
+
+            <button type="button"
+            onclick="runAI('title')"
+            class="px-4 py-2 rounded-xl bg-blue-600 text-white text-sm font-medium hover:bg-blue-500 transition">
+            Gerar título
+            </button>
+        </div>
+
+        <span class="text-sm text-stone-500 whitespace-nowrap">
+            Assistente IA ativado
+        </span>
+
+        </div>
+
+        <p id="ai-loading"
+           class="hidden text-sm text-blue-600 mb-4">
+          Processando com IA...
+        </p>
+
+        <form method="post" class="space-y-6">
+          {% csrf_token %}
+
+          {% for field in form %}
+            <div>
+              {{ field.label_tag }}
+
+              {{ field|add_class:"mt-2 w-full p-3 rounded-xl border border-stone-300 shadow-sm bg-white focus:ring-2 focus:ring-blue-400 focus:outline-none transition" }}
             </div>
+          {% endfor %}
+
+          <button type="submit"
+            class="w-full py-3 rounded-xl bg-green-600 text-white font-semibold hover:bg-green-500 transition shadow-sm">
+            ✅ Criar Post
+          </button>
+        </form>
+
+      </div>
+
+
+      <div class="flex-1 min-w-0">
+
+        <h2 class="text-2xl font-bold text-stone-800 mb-6">
+          Preview
+        </h2>
+
+        <div
+          class="p-5 bg-white border border-stone-300 rounded-2xl shadow-sm overflow-y-auto"
+          style="height: 80vh;"
+        >
+
+          <div id="preview-header"
+               class="text-3xl font-bold text-stone-900 mb-4">
+          </div>
+
+          <hr class="border-stone-200 mb-6">
+
+          <div id="preview-content"
+               class="prose max-w-none text-stone-700">
+          </div>
+
         </div>
+
+      </div>
+
     </div>
+  </div>
 </main>
-    <!-- DOMPurify (sanitize) via CDN; marked is already included in base.html -->
-    <script src="https://cdn.jsdelivr.net/npm/dompurify@2.4.0/dist/purify.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
-    <script>
-    const contentInput = document.getElementById("id_content");
-    const titleInput = document.getElementById("id_title");
-    
-    const previewContent = document.getElementById("preview-content");
-    const previewHeader = document.getElementById("preview-header");
 
-    function updateContentPreview(){
-        const rawContent = contentInput.value;
-        const dirtyHtml = marked.parse(rawContent); // , {breaks: true}
-        previewContent.innerHTML = DOMPurify.sanitize(dirtyHtml);
+<script src="https://cdn.jsdelivr.net/npm/dompurify@2.4.0/dist/purify.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+
+<script>
+
+const contentInput = document.getElementById("id_content");
+const titleInput   = document.getElementById("id_title");
+
+const previewContent = document.getElementById("preview-content");
+const previewHeader  = document.getElementById("preview-header");
+
+const loading = document.getElementById("ai-loading");
+
+
+
+function updateContentPreview() {
+    const rawContent = contentInput.value;
+    const dirtyHtml = marked.parse(rawContent);
+    previewContent.innerHTML = DOMPurify.sanitize(dirtyHtml);
+}
+
+function updateTitlePreview() {
+    const rawTitle = titleInput.value;
+    const dirtyHtml = marked.parse(rawTitle);
+    previewHeader.innerHTML = DOMPurify.sanitize(dirtyHtml);
+}
+
+contentInput.addEventListener("input", updateContentPreview);
+titleInput.addEventListener("input", updateTitlePreview);
+
+window.addEventListener("DOMContentLoaded", () => {
+    updateContentPreview();
+    updateTitlePreview();
+});
+
+
+
+async function runAI(action) {
+
+    loading.classList.remove("hidden");
+
+    const csrfToken =
+        document.querySelector("[name=csrfmiddlewaretoken]").value;
+
+    let formData = new FormData();
+    formData.append("action", action);
+    formData.append("content", contentInput.value);
+
+    try {
+        const response = await fetch("/ai/action/", {
+            method: "POST",
+            headers: {
+                "X-CSRFToken": csrfToken
+            },
+            body: formData
+        });
+
+        const data = await response.json();
+
+        if (data.result) {
+
+            // Melhorar texto
+            if (action === "improve") {
+                contentInput.value = data.result;
+                updateContentPreview();
+            }
+
+            // Gerar título
+            if (action === "title") {
+                titleInput.value = data.result;
+                updateTitlePreview();
+            }
+        }
+
+    } catch (error) {
+        alert("Erro ao usar IA. Tente novamente.");
+        console.error(error);
     }
 
-    function updateTitlePreview(){
-        const rawTitle = titleInput.value;
-        // Se você não quer que o título aceite Markdown (apenas texto), 
-        // use previewHeader.textContent = rawTitle;
-        const dirtyHtml = marked.parse(rawTitle, {breaks: true}); 
-        previewHeader.innerHTML = DOMPurify.sanitize(dirtyHtml);
-    }
+    // Esconder loading
+    loading.classList.add("hidden");
+}
+</script>
 
-    contentInput.addEventListener("input", updateContentPreview);
-    titleInput.addEventListener("input", updateTitlePreview);
-
-    window.addEventListener('DOMContentLoaded', () => {
-        updateContentPreview();
-        updateTitlePreview();
-    });
-        </script>
 {% endblock %}
