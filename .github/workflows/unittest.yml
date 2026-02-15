@@ -32,7 +32,7 @@ jobs:
       DB_PASSWORD: test_pass
       DB_HOST: 127.0.0.1
       DB_PORT: 3306
-      DJANGO_SETTINGS_MODULE: core.settings
+      DJANGO_SETTINGS_MODULE: project.settings
 
     steps:
       - name: Checkout code
