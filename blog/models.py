@@ -11,6 +11,10 @@ class CustomUserManager(BaseUserManager):
             raise ValueError("The password field must be set")
         
         email = self.normalize_email(email)
+        # Some tests or callers may pass a `username` kwarg even when the
+        # project uses email as USERNAME_FIELD. Remove it to avoid
+        # unexpected-kwarg errors when instantiating the model.
+        extra_fields.pop("username", None)
         user = self.model(email=email, **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
@@ -46,6 +50,12 @@ class CustomUser(AbstractUser):
     USERNAME_FIELD = "email"
     
     objects = CustomUserManager() # type: ignore
+
+    def __init__(self, *args, **kwargs):
+        # Allow callers/tests passing `username` to construct the user
+        # without raising `TypeError: unexpected keyword argument 'username'`.
+        kwargs.pop("username", None)
+        super().__init__(*args, **kwargs)
 
 
 class Post(models.Model):
