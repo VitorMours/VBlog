@@ -27,13 +27,16 @@ jobs:
           --health-retries=5
 
     env:
-      DB_NAME: test_db
-      DB_USER: test_user
-      DB_PASSWORD: test_pass
       DB_HOST: 127.0.0.1
       DB_PORT: 3306
       DJANGO_SETTINGS_MODULE: project.settings
-      SECRET_KEY: test-secret-key
+
+      MYSQL_DATABASE: ${{ secrets.MYSQL_DATABASE }}
+      MYSQL_USER: ${{ secrets.MYSQL_USER }}
+      MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+      MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
+      SECRET_KEY: ${{ secrets.SECRET_KEY }}
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
 
     steps:
       - name: Checkout code
