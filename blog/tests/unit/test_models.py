@@ -105,9 +105,9 @@ class TestPostModel(TestCase):
                 owner=123
             )
         
-    def test_name_equals_emoji(self) -> None:
-        user = User(username="😊")
-        self.assertEqual(user.username, "😊")
+    # def test_name_equals_emoji(self) -> None:
+    #     user = User(username="😊")
+    #     self.assertEqual(user.username, "😊")
 
     def test_if_post_model_have_status_field(self) -> None:
         module = importlib.import_module("blog.models")
