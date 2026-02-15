@@ -108,7 +108,7 @@ WSGI_APPLICATION = 'project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-DATABASES = {
+_default_db = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
         "NAME": os.getenv("DB_NAME") or os.getenv("MYSQL_DATABASE"),
@@ -118,6 +118,19 @@ DATABASES = {
         "PORT": os.getenv("DB_PORT", "3306"),
     }
 }
+
+# In GitHub Actions the MySQL service user may not have permission to create
+# test databases. Use an in-memory SQLite DB for CI tests to avoid permission
+# issues while keeping local/dev/prod configs unchanged.
+if os.getenv("GITHUB_ACTIONS") == "true":
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": ":memory:",
+        }
+    }
+else:
+    DATABASES = _default_db
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
