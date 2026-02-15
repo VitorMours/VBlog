@@ -27,14 +27,13 @@ jobs:
           --health-retries=5
 
     env:
+      DB_NAME: ${{ secrets.DB_NAME }}
+      DB_USER: ${{ secrets.DB_USER }}
+      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
       DB_HOST: 127.0.0.1
       DB_PORT: 3306
-      DJANGO_SETTINGS_MODULE: project.settings
 
-      MYSQL_DATABASE: ${{ secrets.MYSQL_DATABASE }}
-      MYSQL_USER: ${{ secrets.MYSQL_USER }}
-      MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
-      MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
+      DJANGO_SETTINGS_MODULE: project.settings
       SECRET_KEY: ${{ secrets.SECRET_KEY }}
       GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
 
@@ -63,9 +62,7 @@ jobs:
           done
 
       - name: Run Migrations
-        run: |
-          python manage.py migrate
+        run: python manage.py migrate
 
       - name: Run Tests
-        run: |
-          python manage.py test blog
+        run: python manage.py test blog
