@@ -14,10 +14,10 @@ jobs:
       mysql:
         image: mysql:8.0
         env:
-          MYSQL_DATABASE: ${{ secrets.MYSQL_DATABASE }}
-          MYSQL_USER: ${{ secrets.MYSQL_USER }}
-          MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
-          MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
+          MYSQL_DATABASE: test_db
+          MYSQL_USER: test_user
+          MYSQL_PASSWORD: test_pass
+          MYSQL_ROOT_PASSWORD: root_pass
         ports:
           - 3306:3306
         options: >-
@@ -33,7 +33,7 @@ jobs:
       DB_HOST: 127.0.0.1
       DB_PORT: 3306
       DJANGO_SETTINGS_MODULE: project.settings
-      SECRET_KEY: ${{ secrets.SECRET_KEY }}
+      SECRET_KEY: test-secret-key
 
     steps:
       - name: Checkout code
@@ -49,10 +49,12 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: Install MySQL Client
+        run: sudo apt-get install -y mysql-client
+
       - name: Wait for MySQL to be ready
         run: |
-          sudo apt-get install -y mysql-client
-          until mysqladmin ping -h"DB_HOST" --silent; do
+          until mysqladmin ping -h"$DB_HOST" --silent; do
             echo "Waiting for MySQL..."
             sleep 2
           done
