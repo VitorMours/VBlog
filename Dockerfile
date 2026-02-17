@@ -20,7 +20,6 @@ COPY entrypoint.sh /entrypoint.sh
 ENV DJANGO_SETTINGS_MODULE=project.settings
 
 RUN chmod +x entrypoint.sh
-CMD ["./entrypoint.sh"]
 
 EXPOSE 8080
 
