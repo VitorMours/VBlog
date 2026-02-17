@@ -5,10 +5,10 @@ set -e
 export PORT=${PORT:-8080}
 
 echo "Running on port: $PORT"
-
-exec python manage.py makemigrations
-exec python manage.py makemigrations blog
-exec python manage.py migrate
+python manage.py collectstatic --noinput
+python manage.py makemigrations
+python manage.py makemigrations blog
+python manage.py migrate
 
 
 
@@ -21,5 +21,3 @@ exec gunicorn project.wsgi:application \
     --timeout 0 \
     --log-level debug
 
-
-O que ajustar no seu Docke
