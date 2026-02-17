@@ -7,18 +7,18 @@ WORKDIR /app
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     gcc \
-    libc-dev \
-    pkg-config \
     default-libmysqlclient-dev \
-    netcat-openbsd \
+    pkg-config \
     && rm -rf /var/lib/apt/lists/*
 
-COPY requirements.txt /app/
-RUN pip install --no-cache-dir -r requirements.txt
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt gunicorn whitenoise
 
-COPY . /app/
+COPY . .
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
+
+EXPOSE 8080
 
 ENTRYPOINT ["/entrypoint.sh"]

@@ -1,22 +1,17 @@
 #!/bin/sh
+set -e
 
-echo "Esperando o MySQL ficar pronto..."
-
-while ! nc -z dolphin 3306; do
-  sleep 1
-done
-
-echo "MySQL pronto!"
-
-echo "Adquirindo Migrações..."
-python manage.py makemigrations
-python manage.py makemigrations blog
-
-echo "Aplicando migrações..."
+echo "Applying migrations..."
+# Tenta rodar as migrações. Se falhar, o container para e você vê o erro nos logs.
 python manage.py migrate --noinput
 
-echo "Coletando arquivos estáticos..."
+echo "Collecting static files..."
+# Essencial para o WhiteNoise servir os arquivos CSS/JS corretamente
 python manage.py collectstatic --noinput
 
-echo "Iniciando Gunicorn..."
-exec gunicorn --bind 0.0.0.0:8000 project.wsgi:application
+echo "Starting server..."
+exec gunicorn project.wsgi:application \
+    --bind 0.0.0.0:${PORT:-8080} \
+    --workers 1 \
+    --threads 8 \
+    --timeout 0

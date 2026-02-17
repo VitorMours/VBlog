@@ -104,21 +104,21 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'project.wsgi.application'
 
+SESSION_ENGINE = "django.contrib.sessions.backends.db"
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-_default_db = {
+DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
-        "NAME": os.getenv("DB_NAME") or os.getenv("MYSQL_DATABASE"),
-        "USER": os.getenv("DB_USER") or os.getenv("MYSQL_USER"),
-        "PASSWORD": os.getenv("DB_PASSWORD") or os.getenv("MYSQL_PASSWORD"),
-        "HOST": os.getenv("DB_HOST", "127.0.0.1"),
-        "PORT": os.getenv("DB_PORT", "3306"),
+        "NAME": os.getenv("MYSQL_DATABASE"),
+        "USER": os.getenv("MYSQL_USER"),
+        "PASSWORD": os.getenv("MYSQL_PASSWORD"),
+        "HOST": os.getenv("MYSQL_HOST"),
+        "PORT": "3306",
     }
 }
-
 # In GitHub Actions the MySQL service user may not have permission to create
 # test databases. Use an in-memory SQLite DB for CI tests to avoid permission
 # issues while keeping local/dev/prod configs unchanged.
