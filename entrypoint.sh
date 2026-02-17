@@ -6,6 +6,12 @@ export PORT=${PORT:-8080}
 
 echo "Running on port: $PORT"
 
+exec python manage.py makemigrations
+exec python manage.py makemigrations blog
+exec python manage.py migrate
+
+
+
 echo "Starting server with Gunicorn..."
 # O 'exec' é vital para que o Gunicorn receba os sinais de encerramento do Cloud Run
 exec gunicorn project.wsgi:application \
