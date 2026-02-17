@@ -47,7 +47,7 @@ SECRET_KEY = SECRET_KEY
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 
 if DEBUG:
@@ -64,6 +64,7 @@ ALLOWED_HOSTS = [
 INTERNAL_IPS = [
     'localhost',
     'vblog-988783281856.europe-west1.run.app',
+    'bitclaims.tech',
 ]
 
 CSRF_TRUSTED_ORIGINS = [
