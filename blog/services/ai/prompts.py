@@ -26,5 +26,8 @@ class BlogPrompts:
     forma que ainda assim, corrija os elementos de gramática impostos pela lingua
     portuguesa, e que mantenha as ideias, elesmentos, e conteúdos do texto. Produzindo 
     no final apenas uma revisao ortográfica praticamente
+    
+    eu quero que vc me retorne APENAS o texto pronto, revisado, e pronto. de forma
+    que nao precise ser modificado, e possa ser enviado diretamente como corpo do post
     {content}
     """
