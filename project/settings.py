@@ -57,7 +57,8 @@ else:
 
 ALLOWED_HOSTS = [
     'localhost',
-    '.run.app'
+    '.run.app',
+    '.tech'
 ]
 
 INTERNAL_IPS = [
@@ -69,6 +70,7 @@ CSRF_TRUSTED_ORIGINS = [
     'http://localhost',
     'https://*.run.app',
     'http://vblog-988783281856.europe-west1.run.app',
+    'https://bitclaims.tech/',
 ]
 
 
