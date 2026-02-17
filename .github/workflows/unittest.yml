@@ -71,4 +71,4 @@ jobs:
         run: python manage.py migrate
 
       - name: Run Tests
-        run: python manage.py test blog
+        run: python manage.py test blog --keepdb
