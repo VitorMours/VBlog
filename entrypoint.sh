@@ -5,12 +5,12 @@ set -e
 export PORT=${PORT:-8080}
 
 echo "Running on port: $PORT"
-python manage.py collectstatic --noinput
-python manage.py makemigrations
-python manage.py makemigrations blog
-python manage.py migrate
 
-
+# Executa as tarefas de setup em BACKGROUND e inicia o servidor
+python manage.py collectstatic --noinput &
+python manage.py makemigrations &
+python manage.py makemigrations blog &
+python manage.py migrate &
 
 echo "Starting server with Gunicorn..."
 # O 'exec' é vital para que o Gunicorn receba os sinais de encerramento do Cloud Run
@@ -20,4 +20,3 @@ exec gunicorn project.wsgi:application \
     --threads 8 \
     --timeout 0 \
     --log-level debug
-
