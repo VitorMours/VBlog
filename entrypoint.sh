@@ -6,11 +6,14 @@ export PORT=${PORT:-8080}
 
 echo "Running on port: $PORT"
 
-# Executa as tarefas de setup em BACKGROUND e inicia o servidor
-python manage.py collectstatic --noinput &
-python manage.py makemigrations &
-python manage.py makemigrations blog &
-python manage.py migrate &
+# Executa as tarefas de setup (síncronas) antes de iniciar o servidor.
+# Rodar colet static e migrações aqui garante que os arquivos estáticos
+# existam em `STATIC_ROOT` antes do Gunicorn arrancar no Cloud Run.
+python manage.py collectstatic --noinput
+# Criar migrações e aplicar (não falhará se não houver mudanças)
+python manage.py makemigrations --noinput || true
+python manage.py makemigrations blog --noinput || true
+python manage.py migrate --noinput
 
 echo "Starting server with Gunicorn..."
 # O 'exec' é vital para que o Gunicorn receba os sinais de encerramento do Cloud Run

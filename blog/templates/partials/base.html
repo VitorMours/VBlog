@@ -20,5 +20,7 @@
     {% endblock %}
     {% include './_footer.html' %}
 </body>
-{% block javascript %}{% endblock %}
+{% block javascript %}
+    <script src="{% static 'js/main.js' %}"></script>
+{% endblock %}
 </html>
