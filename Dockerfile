@@ -17,7 +17,12 @@ RUN pip install --no-cache-dir -r requirements.txt gunicorn whitenoise
 COPY . .
 
 COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
+ENV DJANGO_SETTINGS_MODULE=project.settings
+RUN python manage.py collectstatic --noinput
+RUN python manage.py migrate
+
+RUN chmod +x entrypoint.sh
+CMD ["./entrypoint.sh"]
 
 EXPOSE 8080
 
