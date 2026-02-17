@@ -2,6 +2,11 @@ services:
   # Serviço da aplicação Django
   lillia:
     build: .
+    environment:
+      MYSQL_DATABASE: django_db
+      MYSQL_USER: django_user
+      MYSQL_PASSWORD: django_pass
+      MYSQL_HOST: dolphin
     volumes:
       - .:/app
       - static_volume:/app/static
