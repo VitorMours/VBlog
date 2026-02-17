@@ -19,6 +19,8 @@ COPY . .
 COPY entrypoint.sh /entrypoint.sh
 ENV DJANGO_SETTINGS_MODULE=project.settings
 RUN python manage.py collectstatic --noinput
+RUN python manage.py makemigrations
+RUN python manage.py makemigrations blog
 RUN python manage.py migrate
 
 RUN chmod +x entrypoint.sh
