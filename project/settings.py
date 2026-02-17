@@ -57,17 +57,17 @@ else:
 
 ALLOWED_HOSTS = [
     'localhost',
-    '127.0.0.1',
+    'vblog-988783281856.europe-west1.run.app'
 ]
 
 INTERNAL_IPS = [
     'localhost',
-    '127.0.0.1',
+    'vblog-988783281856.europe-west1.run.app',
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     'http://localhost',
-    'http://127.0.0.1',
+    'http://vblog-988783281856.europe-west1.run.app',
 ]
 
 # Application definition
