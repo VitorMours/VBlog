@@ -11,7 +11,7 @@
         
 #     def test_if_index_page_loads(self):
 #         self.driver.get("http://localhost:8000/")
-#         self.assertIn("VBlog", self.driver.title)
+#         self.assertIn("BitClaims", self.driver.title)
     
     
     
