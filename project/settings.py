@@ -36,8 +36,6 @@ GEMINI_API_KEY = env("GEMINI_API_KEY")
 
 USE_X_FORWARDED_HOST = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'http')
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
@@ -69,10 +67,15 @@ INTERNAL_IPS = [
 
 CSRF_TRUSTED_ORIGINS = [
     'http://localhost',
-    'https://*.run.app',
-    'http://vblog-988783281856.europe-west1.run.app',
-    'https://bitclaims.tech/',
+    'https://vblog-988783281856.europe-west1.run.app',
+    'https://bitclaims.tech',
 ]
+
+CSRF_TRUSTED_ORIGINS += [
+    'https://*.run.app',
+]
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
 
 
 # Application definition
