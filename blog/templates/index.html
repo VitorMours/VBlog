@@ -1,1 +1,140 @@
 {% extends 'partials/base.html' %}
+
+{% block title %} - Home {% endblock %}
+
+{% block content %}
+<main class="bg-gradient-to-b from-gray-900 via-gray-800 to-stone-100">
+  <!-- Hero Section -->
+  <section class="min-h-screen flex items-center justify-center px-6 py-20">
+    <div class="max-w-4xl mx-auto text-center space-y-8">
+      <!-- Logo & Title -->
+      <div class="space-y-4">
+        <h1 class="text-6xl md:text-8xl font-black text-white drop-shadow-lg">VBlog</h1>
+        <p class="text-xl md:text-2xl text-gray-300 font-light">Onde Ideias Encontram Vozes</p>
+      </div>
+
+      <!-- Description -->
+      <p class="text-lg text-gray-400 leading-relaxed max-w-2xl mx-auto">
+        Uma plataforma de blog moderna, inovadora e desenvolvida com paixão por <span class="text-blue-400 font-semibold">test-driven development</span>. Compartilhe suas ideias, votes no que importa e descubra conteúdo que realmente faz diferença.
+      </p>
+
+      <!-- CTA Buttons -->
+      <div class="flex flex-col sm:flex-row gap-4 justify-center pt-8">
+        <a href="{% url 'login' %}" class="px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg transition duration-300 shadow-lg hover:shadow-xl transform hover:scale-105">
+          Entrar
+        </a>
+        <a href="{% url 'signin' %}" class="px-8 py-4 bg-transparent border-2 border-blue-600 text-blue-400 hover:bg-blue-900/20 font-bold rounded-lg transition duration-300 hover:border-blue-500">
+          Criar Conta
+        </a>
+      </div>
+
+      <!-- Quick Stats -->
+      <div class="pt-12 grid grid-cols-3 gap-6 text-center">
+        <div>
+          <p class="text-4xl font-bold text-blue-400">∞</p>
+          <p class="text-gray-400 text-sm mt-2">Conteúdo Infinito</p>
+        </div>
+        <div>
+          <p class="text-4xl font-bold text-green-400">⬆️⬇️</p>
+          <p class="text-gray-400 text-sm mt-2">Sistema de Votos</p>
+        </div>
+        <div>
+          <p class="text-4xl font-bold text-purple-400">🤖</p>
+          <p class="text-gray-400 text-sm mt-2">IA Integrada</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="py-20 bg-stone-100 px-6">
+    <div class="max-w-6xl mx-auto">
+      <h2 class="text-4xl font-bold text-center text-gray-900 mb-16">Por Que VBlog?</h2>
+      
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Feature 1 -->
+        <div class="bg-white p-8 rounded-lg shadow-md hover:shadow-lg transition hover:scale-105">
+          <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
+            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold text-gray-900 mb-3">Markdown Poderoso</h3>
+          <p class="text-gray-600">Escreva com Markdown completo, com suporte para tabelas, código destaque, e muito mais</p>
+        </div>
+
+        <!-- Feature 2 -->
+        <div class="bg-white p-8 rounded-lg shadow-md hover:shadow-lg transition hover:scale-105">
+          <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-4">
+            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold text-gray-900 mb-3">Sistema de Votos</h3>
+          <p class="text-gray-600">Comunidade decide! Upvote e downvote conteúdo para decidir o que sobressai</p>
+        </div>
+
+        <!-- Feature 3 -->
+        <div class="bg-white p-8 rounded-lg shadow-md hover:shadow-lg transition hover:scale-105">
+          <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
+            <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold text-gray-900 mb-3">IA Integrada</h3>
+          <p class="text-gray-600">Assistente de IA com Gemini para melhorar seus textos e gerar títulos automáticos</p>
+        </div>
+
+        <!-- Feature 4 -->
+        <div class="bg-white p-8 rounded-lg shadow-md hover:shadow-lg transition hover:scale-105">
+          <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center mb-4">
+            <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold text-gray-900 mb-3">TDD Garantido</h3>
+          <p class="text-gray-600">Desenvolvido com Test-Driven Development para máxima qualidade e confiabilidade</p>
+        </div>
+
+        <!-- Feature 5 -->
+        <div class="bg-white p-8 rounded-lg shadow-md hover:shadow-lg transition hover:scale-105">
+          <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center mb-4">
+            <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold text-gray-900 mb-3">Performance</h3>
+          <p class="text-gray-600">Construído com Django e otimizado para leitura rápida e experiência fluida</p>
+        </div>
+
+        <!-- Feature 6 -->
+        <div class="bg-white p-8 rounded-lg shadow-md hover:shadow-lg transition hover:scale-105">
+          <div class="w-12 h-12 bg-cyan-100 rounded-lg flex items-center justify-center mb-4">
+            <svg class="w-6 h-6 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold text-gray-900 mb-3">Facilmente Customizável</h3>
+          <p class="text-gray-600">Open Source e construído com arquitetura limpa, fácil de estender</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Call to Action Section -->
+  <section class="py-20 bg-gradient-to-r from-blue-600 to-purple-600 px-6">
+    <div class="max-w-4xl mx-auto text-center space-y-8">
+      <h2 class="text-4xl md:text-5xl font-bold text-white">Pronto para Começar?</h2>
+      <p class="text-xl text-blue-100">Junte-se à comunidade de escritores que acreditam em qualidade, testes e inovação</p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="{% url 'signin' %}" class="px-8 py-4 bg-white text-blue-600 font-bold rounded-lg hover:bg-gray-100 transition duration-300 shadow-lg hover:shadow-xl">
+          Criar sua Conta
+        </a>
+        <a href="{% url 'about' %}" class="px-8 py-4 bg-transparent border-2 border-white text-white font-bold rounded-lg hover:bg-white/10 transition duration-300">
+          Saber Mais
+        </a>
+      </div>
+    </div>
+  </section>
+</main>
+{% endblock %}

@@ -1,1 +1,258 @@
 {% extends 'partials/base.html' %}
+
+{% block title %} - Sobre {% endblock %}
+
+{% block content %}
+<main class="bg-stone-100">
+  <!-- Hero Section -->
+  <section class="bg-gradient-to-b from-gray-900 to-gray-800 text-white py-20 px-6">
+    <div class="max-w-4xl mx-auto text-center space-y-6">
+      <h1 class="text-5xl md:text-6xl font-black">Sobre o VBlog</h1>
+      <p class="text-xl text-gray-300">Um projeto construído com paixão por qualidade, testes e inovação</p>
+    </div>
+  </section>
+
+  <!-- Main Content -->
+  <div class="max-w-4xl mx-auto py-16 px-6 space-y-16">
+    
+    <!-- O que é o VBlog -->
+    <section class="space-y-6">
+      <h2 class="text-3xl font-bold text-gray-900">O Que é o VBlog?</h2>
+      <div class="bg-white p-8 rounded-lg shadow-md space-y-4">
+        <p class="text-lg text-gray-700 leading-relaxed">
+          VBlog é muito mais que uma simples plataforma de blog. É um <span class="font-bold text-blue-600">ecossistema completo de escrita colaborativa</span> 
+          onde a comunidade decide o que é relevante através de um sistema de votação inteligente. 
+        </p>
+        <p class="text-lg text-gray-700 leading-relaxed">
+          Desenvolvido integralmente em <span class="font-bold">Python com Django</span>, o VBlog combina um backend robusto 
+          com um frontend moderno usando <span class="font-bold">Tailwind CSS</span>, criando uma experiência de usuário limpa, responsiva e intuitiva.
+        </p>
+        <p class="text-lg text-gray-700 leading-relaxed">
+          Mas o que torna o VBlog <span class="font-bold text-purple-600">verdadeiramente especial</span> é sua abordagem ao desenvolvimento: 
+          cada funcionalidade foi construída seguindo rigorosamente o princípio de <span class="font-bold">Test-Driven Development (TDD)</span>, 
+          garantindo qualidade, confiabilidade e segurança em cada linha de código.
+        </p>
+      </div>
+    </section>
+
+    <!-- Particularidades Técnicas -->
+    <section class="space-y-6">
+      <h2 class="text-3xl font-bold text-gray-900">Particularidades Técnicas</h2>
+      
+      <div class="grid md:grid-cols-2 gap-8">
+        <!-- TDD -->
+        <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-blue-600">
+          <h3 class="text-xl font-bold text-gray-900 mb-3">🧪 Test-Driven Development</h3>
+          <p class="text-gray-700 mb-4">
+            Cada feature é desenvolvida seguindo TDD: escrevemos testes antes do código, garantindo que a aplicação funcione exatamente como esperado.
+          </p>
+          <ul class="text-gray-600 space-y-2">
+            <li>✓ Testes unitários abrangentes</li>
+            <li>✓ Testes de integração e e2e</li>
+            <li>✓ Máxima confiabilidade e segurança</li>
+          </ul>
+        </div>
+
+        <!-- Sistema de Votos -->
+        <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-green-600">
+          <h3 class="text-xl font-bold text-gray-900 mb-3">⬆️⬇️ Sistema de Votação Democrático</h3>
+          <p class="text-gray-700 mb-4">
+            A comunidade decide! Cada post tem um sistema de upvote/downvote que determina sua relevância.
+          </p>
+          <ul class="text-gray-600 space-y-2">
+            <li>✓ Posts mais votados ganham destaque</li>
+            <li>✓ Comunidade controla o ranking</li>
+            <li>✓ Conteúdo de qualidade é recompensado</li>
+          </ul>
+        </div>
+
+        <!-- IA Integrada -->
+        <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-purple-600">
+          <h3 class="text-xl font-bold text-gray-900 mb-3">🤖 IA Integrada com Gemini</h3>
+          <p class="text-gray-700 mb-4">
+            A inteligência artificial não apenas assiste o escritor, mas o empodera com ferramentas incríveis.
+          </p>
+          <ul class="text-gray-600 space-y-2">
+            <li>✓ Geração automática de títulos</li>
+            <li>✓ Melhoria de texto com IA</li>
+            <li>✓ Assistente de escrita inteligente</li>
+          </ul>
+        </div>
+
+        <!-- Markdown Avançado -->
+        <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-yellow-600">
+          <h3 class="text-xl font-bold text-gray-900 mb-3">📝 Markdown Poderoso</h3>
+          <p class="text-gray-700 mb-4">
+            Suporte completo a Markdown com renderização profissional e destaque de sintaxe.
+          </p>
+          <ul class="text-gray-600 space-y-2">
+            <li>✓ Tabelas e listas avançadas</li>
+            <li>✓ Syntax highlighting para código</li>
+            <li>✓ Renderização segura e otimizada</li>
+          </ul>
+        </div>
+
+        <!-- Arquitetura Limpa -->
+        <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-red-600">
+          <h3 class="text-xl font-bold text-gray-900 mb-3">🏗️ Arquitetura Limpa</h3>
+          <p class="text-gray-700 mb-4">
+            Separação clara de responsabilidades com Services, Views e Models bem definidos.
+          </p>
+          <ul class="text-gray-600 space-y-2">
+            <li>✓ Código maintível e escalável</li>
+            <li>✓ Fácil de estender e modificar</li>
+            <li>✓ Padrões de design estabelecidos</li>
+          </ul>
+        </div>
+
+        <!-- Docker & DevOps -->
+        <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-cyan-600">
+          <h3 class="text-xl font-bold text-gray-900 mb-3">🐳 Docker & CI/CD</h3>
+          <p class="text-gray-700 mb-4">
+            Totalmente containerizado com suporte para deploy automatizado e escalável.
+          </p>
+          <ul class="text-gray-600 space-y-2">
+            <li>✓ Docker Compose para desenvolvimento</li>
+            <li>✓ GitHub Actions para CI/CD</li>
+            <li>✓ Pronto para GCP e Cloud Run</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stack Tecnológico -->
+    <section class="space-y-6">
+      <h2 class="text-3xl font-bold text-gray-900">Stack Tecnológico</h2>
+      <div class="bg-white p-8 rounded-lg shadow-md">
+        <div class="grid md:grid-cols-2 gap-8">
+          <div>
+            <h4 class="font-bold text-gray-900 mb-4 text-lg">🔙 Backend</h4>
+            <ul class="space-y-2 text-gray-700">
+              <li>• <span class="font-semibold">Python 3.11</span> - Linguagem principal</li>
+              <li>• <span class="font-semibold">Django 5.2</span> - Framework backend robusto</li>
+              <li>• <span class="font-semibold">MySQL</span> - Banco de dados persistente</li>
+              <li>• <span class="font-semibold">Celery</span> - Tasks assíncronas</li>
+              <li>• <span class="font-semibold">Gunicorn</span> - App server</li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="font-bold text-gray-900 mb-4 text-lg">🎨 Frontend</h4>
+            <ul class="space-y-2 text-gray-700">
+              <li>• <span class="font-semibold">Tailwind CSS</span> - Estilização moderna</li>
+              <li>• <span class="font-semibold">HTML5</span> - Marcação semântica</li>
+              <li>• <span class="font-semibold">JavaScript</span> - Interatividade e votos</li>
+              <li>• <span class="font-semibold">HTMX</span> - Uma experiência mais fluida com mínimo JS</li>
+              <li>• <span class="font-semibold">Chart.js</span> - Visualização de dados</li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="font-bold text-gray-900 mb-4 text-lg">🤖 IA & Cloud</h4>
+            <ul class="space-y-2 text-gray-700">
+              <li>• <span class="font-semibold">Gemini API</span> - Processamento de texto com IA</li>
+              <li>• <span class="font-semibold">Google Cloud</span> - Infraestrutura cloud</li>
+              <li>• <span class="font-semibold">Docker</span> - Containerização</li>
+              <li>• <span class="font-semibold">GitHub Actions</span> - Automação e CI/CD</li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="font-bold text-gray-900 mb-4 text-lg">🧪 Qualidade</h4>
+            <ul class="space-y-2 text-gray-700">
+              <li>• <span class="font-semibold">pytest</span> - Framework de testes</li>
+              <li>• <span class="font-semibold">TDD</span> - Metodologia de desenvolvimento</li>
+              <li>• <span class="font-semibold">Testes E2E</span> - Validação completa</li>
+              <li>• <span class="font-semibold">Code Coverage</span> - Máxima cobertura</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sobre o Criador -->
+    <section class="space-y-6">
+      <h2 class="text-3xl font-bold text-gray-900">Sobre o Criador</h2>
+      <div class="bg-gradient-to-r from-blue-50 to-purple-50 p-8 rounded-lg shadow-md">
+        <div class="flex flex-col md:flex-row gap-8 items-center md:items-start">
+          <div class="flex-1">
+            <h3 class="text-2xl font-bold text-gray-900 mb-4">João Vitor</h3>
+            <p class="text-gray-700 leading-relaxed mb-4">
+              Um desenvolvedor full-stack apaixonado por código limpo, testes automatizados e experiências de usuário incríveis. 
+              Com formação em desenvolvimento de software e foco em boas práticas, João acredita que a qualidade não é um luxo, mas uma necessidade.
+            </p>
+            <p class="text-gray-700 leading-relaxed mb-4">
+              O VBlog é mais que um projeto—é um <span class="font-bold">manifesto</span>. Um testamento do compromisso de João com:
+            </p>
+            <ul class="space-y-3 text-gray-700">
+              <li class="flex items-start gap-3">
+                <span class="text-blue-600 font-bold">✓</span>
+                <span><span class="font-semibold">Qualidade de Código</span> - Cada linha foi testada e revisada</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <span class="text-blue-600 font-bold">✓</span>
+                <span><span class="font-semibold">Test-Driven Development</span> - TDD não é apenas metodologia, é cultura</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <span class="text-blue-600 font-bold">✓</span>
+                <span><span class="font-semibold">Inovação Tecnológica</span> - Integrando IA e práticas modernas</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <span class="text-blue-600 font-bold">✓</span>
+                <span><span class="font-semibold">Comunidade</span> - Acreditando no poder da colaboração</span>
+              </li>
+            </ul>
+          </div>
+          <div class="flex-1 text-center">
+            <div class="bg-gradient-to-br from-blue-600 to-purple-600 w-48 h-48 rounded-full mx-auto flex items-center justify-center">
+              <div class="text-white text-6xl font-bold">JV</div>
+            </div>
+            <p class="mt-6 text-gray-600 italic">Desenvolvedor Full-Stack | Apaixonado por TDD | Inovador</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Filosofia de Desenvolvimento -->
+    <section class="space-y-6">
+      <h2 class="text-3xl font-bold text-gray-900">Filosofia de Desenvolvimento</h2>
+      <div class="bg-white p-8 rounded-lg shadow-md space-y-6">
+        <div class="border-l-4 border-blue-600 pl-6 py-4">
+          <h4 class="font-bold text-gray-900 text-lg mb-2">🎯 Propósito</h4>
+          <p class="text-gray-700">
+            Demonstrar que TDD não é apenas uma metodologia, mas um caminho para criar software mais confiável, mantível e escalável. 
+            VBlog é a prova de que qualidade e inovação podem coexistir harmoniosamente.
+          </p>
+        </div>
+        <div class="border-l-4 border-green-600 pl-6 py-4">
+          <h4 class="font-bold text-gray-900 text-lg mb-2">🔄 Ciclo de Desenvolvimento</h4>
+          <p class="text-gray-700">
+            Red → Green → Refactor. Cada funcionalidade é desenvolvida com testes primeiro, depois implementação, 
+            garantindo que o código não apenas funcione, mas funcione bem.
+          </p>
+        </div>
+        <div class="border-l-4 border-purple-600 pl-6 py-4">
+          <h4 class="font-bold text-gray-900 text-lg mb-2">💡 Inovação Contínua</h4>
+          <p class="text-gray-700">
+            Integrando tecnologias modernas como IA (Gemini API) com práticas estabelecidas (TDD, Clean Code), 
+            criando uma ponte entre o presente e o futuro do desenvolvimento.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-8 rounded-lg shadow-md text-center space-y-6 mb-0">
+      <h2 class="text-3xl font-bold">Quer Fazer Parte Dessa Jornada?</h2>
+      <p class="text-xl text-blue-100">
+        Junte-se a uma comunidade que valoriza qualidade, inovação e excelência
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center pt-4">
+        <a href="{% url 'signin' %}" class="px-8 py-3 bg-white text-blue-600 font-bold rounded-lg hover:bg-gray-100 transition duration-300">
+          Comece Agora
+        </a>
+        <a href="{% url 'login' %}" class="px-8 py-3 border-2 border-white text-white font-bold rounded-lg hover:bg-white/10 transition duration-300">
+          Já Tem Conta?
+        </a>
+      </div>
+    </section>
+  </div>
+</main>
+{% endblock %}
