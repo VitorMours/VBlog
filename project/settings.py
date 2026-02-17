@@ -128,7 +128,7 @@ DATABASES = {
         'USER': os.environ.get('DB_USER'),  # Usuário criado
         'PASSWORD': os.environ.get('DB_PASSWORD'),  # Senha do usuário
         'HOST': os.environ.get('DB_HOST'),  # Será o caminho do soquete
-        'PORT': '3306',
+        'PORT': os.environ.get('DB_PORT', ''),
         'OPTIONS': {
             'charset': 'utf8mb4',
         }
