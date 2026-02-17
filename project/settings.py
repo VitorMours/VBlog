@@ -122,13 +122,16 @@ SESSION_ENGINE = "django.contrib.sessions.backends.db"
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.mysql",
-        "NAME": os.getenv("MYSQL_DATABASE"),
-        "USER": os.getenv("MYSQL_USER"),
-        "PASSWORD": os.getenv("MYSQL_PASSWORD"),
-        "HOST": os.getenv("MYSQL_HOST"),
-        "PORT": "3306",
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': os.environ.get('DB_NAME'),  # Nome do banco de dados
+        'USER': os.environ.get('DB_USER'),  # Usuário criado
+        'PASSWORD': os.environ.get('DB_PASSWORD'),  # Senha do usuário
+        'HOST': os.environ.get('DB_HOST'),  # Será o caminho do soquete
+        'PORT': '3306',
+        'OPTIONS': {
+            'charset': 'utf8mb4',
+        }
     }
 }
 
