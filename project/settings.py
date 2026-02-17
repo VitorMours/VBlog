@@ -15,15 +15,25 @@ from pathlib import Path
 from django.contrib.messages import constants as messages 
 from django.conf import settings
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-env = environ.Env(
-    DEBUG=(bool, False)
-)
-
 BASE_DIR = Path(__file__).resolve().parent.parent
 AUTH_USER_MODEL = "blog.CustomUser"
-environ.Env.read_env(os.path.join(BASE_DIR, ".env"))
+env = environ.Env(
+    DEBUG=(bool, False),
+    SECRET_KEY=(str, 'django-insecure-fallback-key-for-build-purposes'),
+    GEMINI_API_KEY=(str, ''),
+    MYSQL_DATABASE=(str, 'db_name'),
+    MYSQL_USER=(str, 'root'),
+    MYSQL_PASSWORD=(str, ''),
+    MYSQL_HOST=(str, 'localhost'),
+)
+env_file = os.path.join(BASE_DIR, ".env")
+
+if os.path.exists(env_file):
+    environ.Env.read_env(env_file)
+
 SECRET_KEY = env("SECRET_KEY")
 GEMINI_API_KEY = env("GEMINI_API_KEY")
+
 USE_X_FORWARDED_HOST = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'http')
 SESSION_COOKIE_SECURE = False
@@ -119,21 +129,7 @@ DATABASES = {
         "PORT": "3306",
     }
 }
-# In GitHub Actions the MySQL service user may not have permission to create
-# test databases. Use an in-memory SQLite DB for CI tests to avoid permission
-# issues while keeping local/dev/prod configs unchanged.
-if os.getenv("GITHUB_ACTIONS") == "true":
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.sqlite3",
-            "NAME": ":memory:",
-        }
-    }
-else:
-    DATABASES = _default_db
 
-# Password validation
-# https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
